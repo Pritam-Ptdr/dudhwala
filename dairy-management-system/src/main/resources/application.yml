@@ -1,0 +1,4 @@
+spring:
+  name: dairy-management-system
+  profiles:
+    active: local

@@ -1,0 +1,33 @@
+spring:
+  name: dairy-management-system-local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/dudhwala
+    username: root
+    password: 626130
+
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      pool-name: dairy-management-system-pool-local
+      max-lifetime: 2000000
+      connection-timeout: 30000
+      auto-commit: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  servlet:
+    context-path: /dairy-management-system-api-local
+  port: 1061

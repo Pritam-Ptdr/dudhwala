@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+	<persistence-unit name="dairy-management-system">
+		<class>com.amstech.dairy.management.system.entity.Address</class>
+		<class>com.amstech.dairy.management.system.entity.City</class>
+		<class>com.amstech.dairy.management.system.entity.Country</class>
+		<class>com.amstech.dairy.management.system.entity.Delivery</class>
+		<class>com.amstech.dairy.management.system.entity.Image</class>
+		<class>com.amstech.dairy.management.system.entity.MilkProduct</class>
+		<class>com.amstech.dairy.management.system.entity.Milkmen</class>
+		<class>com.amstech.dairy.management.system.entity.Notification</class>
+		<class>com.amstech.dairy.management.system.entity.Order</class>
+		<class>com.amstech.dairy.management.system.entity.OrderItem</class>
+		<class>com.amstech.dairy.management.system.entity.Payment</class>
+		<class>com.amstech.dairy.management.system.entity.PaymentMode</class>
+		<class>com.amstech.dairy.management.system.entity.ProductCategory</class>
+		<class>com.amstech.dairy.management.system.entity.Role</class>
+		<class>com.amstech.dairy.management.system.entity.Route</class>
+		<class>com.amstech.dairy.management.system.entity.State</class>
+		<class>com.amstech.dairy.management.system.entity.Subscription</class>
+		<class>com.amstech.dairy.management.system.entity.SubscriptionHistory</class>
+		<class>com.amstech.dairy.management.system.entity.TransactionHistory</class>
+		<class>com.amstech.dairy.management.system.entity.User</class>
+		<class>com.amstech.dairy.management.system.entity.UserRole</class>
+	</persistence-unit>
+</persistence>
