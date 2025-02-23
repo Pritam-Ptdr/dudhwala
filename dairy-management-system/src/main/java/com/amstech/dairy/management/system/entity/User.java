@@ -44,6 +44,17 @@ public class User implements Serializable {
 
 	@Lob
 	private String usercol;
+	
+	private int is_deleted;
+	
+
+	public int getIs_deleted() {
+		return is_deleted;
+	}
+
+	public void setIs_deleted(int is_deleted) {
+		this.is_deleted = is_deleted;
+	}
 
 	public User() {
 	}

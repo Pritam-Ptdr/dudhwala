@@ -27,11 +27,10 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 //	 @Query("select e from User e where e.firstName=:firstName") 
 //	    List<User> findByFirstNameUsers(@Param("firstName") String firstName);
 //	 
-//	 @Modifying
-//	 @Transactional
-//	 @Query("UPDATE User e SET e.firstName = :firstName WHERE e.id = :id")
-//	 int updateByUser(@Param("id") Integer id , @Param("firstName") String firstName);
-//	 
+	@Modifying
+	@Transactional
+	@Query("UPDATE User e SET e.password = :password WHERE (e.mobileNumber = :mobileNumber OR e.email = :email)")
+	int forgotPassword(@Param("email") String email, @Param("mobileNumber") String mobileNumber, @Param("password") String password);
 //	 
 //	 @Query("SELECT e FROM User e WHERE (e.mobileNumber = :mobileNumber OR e.email = :email) AND e.password = :password")
 //	 User findByMobileUser(@Param("mobileNumber") String mobileNumber, @Param("email") String email, @Param("password") String password);

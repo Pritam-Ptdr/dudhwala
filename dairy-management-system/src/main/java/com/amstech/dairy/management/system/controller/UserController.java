@@ -2,12 +2,14 @@ package com.amstech.dairy.management.system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
@@ -61,6 +63,39 @@ public class UserController {
 					
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT , value = "/updatePassword" , consumes = "application/json" ,  produces = "application/json" )
+	public ResponseEntity<Object>updatePassword(@RequestBody UserModelRequest userModelRequest){
+		
+		System.out.println("User Passwor Update");
+		
+		try {
+			userService.forgotPassword(userModelRequest);
+			return new ResponseEntity<Object>("User Password update successfuly" +userModelRequest.getFirstName() , HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>("User Password note update " +e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR);
+			
+			
+		}
+		
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "softDeleteby", produces = "application/json")
+	public ResponseEntity<Object> softDeleteById(@RequestParam("id") Integer id){
+		
+		try {
+			userService.softDeleteById(id);
+			return new ResponseEntity<Object>("User delete Successfully" , HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>("faild user deleted" , HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		
+	}
+
 
 	
 }
