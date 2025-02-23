@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.amstech.dairy.management.system.model.request.ProductModelRequest;
 import com.amstech.dairy.management.system.model.response.ProductResponseModel;
@@ -56,4 +58,22 @@ public class ProductController {
 			
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/updateProduct", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Object> updateProduct(@RequestBody ProductModelRequest productModelRequest) {
+
+		System.out.println("update User All details " + productModelRequest.getId());
+
+		try {
+			productService.updateProduct(productModelRequest);
+			return new ResponseEntity<Object>(" Product update successfuly" + productModelRequest, HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.getStackTrace();
+			return new ResponseEntity<Object>("Error Product update faild"  + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
 }
