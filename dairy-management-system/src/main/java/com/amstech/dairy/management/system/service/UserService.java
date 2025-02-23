@@ -5,9 +5,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
+import com.amstech.dairy.management.system.model.response.ProductResponseModel;
 import com.amstech.dairy.management.system.repo.UserRepo;
 
 @Service
@@ -83,44 +85,44 @@ public class UserService {
 	}
 
 	public void forgotPassword(UserModelRequest userModelRequest) throws Exception {
-	    
-	    String mobileNumber = userModelRequest.getMobileNumber().trim();
 
-	  
-	    Optional<User> userOptional = Optional.of(userRepo.findByMobileNumberUser(mobileNumber));
+		String mobileNumber = userModelRequest.getMobileNumber().trim();
 
-	    
-	    if (!userOptional.isPresent()) {
-	        throw new Exception("User not found with mobile number " + mobileNumber);
-	    }
+		Optional<User> userOptional = Optional.of(userRepo.findByMobileNumberUser(mobileNumber));
 
-	    User user = userOptional.get();
+		if (!userOptional.isPresent()) {
+			throw new Exception("User not found with mobile number " + mobileNumber);
+		}
 
-	   
-	    int userUpdate = userRepo.forgotPassword(user.getEmail(), user.getMobileNumber(), userModelRequest.getPassword());
+		User user = userOptional.get();
 
-	    if (userUpdate > 0) {
-	        System.out.println("User Password update Successfuly");
-	    } else {
-	        System.out.println("User Password update failed");
-	    }
+		int userUpdate = userRepo.forgotPassword(user.getEmail(), user.getMobileNumber(),
+				userModelRequest.getPassword());
+
+		if (userUpdate > 0) {
+			System.out.println("User Password update Successfuly");
+		} else {
+			System.out.println("User Password update failed");
+		}
 	}
 
-  public void softDeleteById(Integer id) throws Exception {
-	  
-	  Optional<User> userOptional = userRepo.findById(id);
-	  
-	  if(!userOptional.isPresent()) {
-		  throw new Exception("User does not exist");
-	  }
-	  User user = userOptional.get();
-	  
-	  if(user.getIs_deleted() == 1) {
-		  throw new Exception("User already deleted");
-	  }
-	  
-	  user.setIs_deleted(1);
-	  userRepo.save(user);
-  }
+	public void softDeleteById(Integer id) throws Exception {
+
+		Optional<User> userOptional = userRepo.findById(id);
+
+		if (!userOptional.isPresent()) {
+			throw new Exception("User does not exist");
+		}
+		User user = userOptional.get();
+
+		if (user.getIs_deleted() == 1) {
+			throw new Exception("User already deleted");
+		}
+
+		user.setIs_deleted(1);
+		userRepo.save(user);
+	}
+
+	
 
 }

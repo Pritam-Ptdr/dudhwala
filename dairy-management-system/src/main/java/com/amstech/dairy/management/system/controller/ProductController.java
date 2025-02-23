@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.amstech.dairy.management.system.model.request.ProductModelRequest;
 import com.amstech.dairy.management.system.model.response.ProductResponseModel;
 import com.amstech.dairy.management.system.service.ProductService;
@@ -35,7 +34,7 @@ public class ProductController {
 		System.out.println("Object created : project controller ");
 
 		try {
-             productService.addMilkProduct(productModelRequest);
+			productService.addMilkProduct(productModelRequest);
 			return new ResponseEntity<Object>(" Product add successfuly" + productModelRequest.getId(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,22 +42,22 @@ public class ProductController {
 
 		}
 	}
-	
-	
-	@RequestMapping(method = RequestMethod.GET , value= "/findAllProduct" , produces = "application/json")
-	public ResponseEntity<Object> findAllProduct(){
-		
+
+	@RequestMapping(method = RequestMethod.GET, value = "/findAllProduct", produces = "application/json")
+	public ResponseEntity<Object> findAllProduct() {
+
 		try {
-			List<ProductResponseModel>  productResponseModels = productService.findAllProduct();
-			return new ResponseEntity<>(  productResponseModels , HttpStatus.OK);
-			
-		}catch(Exception e) {
+			List<ProductResponseModel> productResponseModels = productService.findAllProduct();
+			return new ResponseEntity<>(productResponseModels, HttpStatus.OK);
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>( "Error fetching all Milk Product "+ e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR);
-			
+			return new ResponseEntity<>("Error fetching all Milk Product " + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateProduct", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Object> updateProduct(@RequestBody ProductModelRequest productModelRequest) {
 
@@ -70,25 +69,41 @@ public class ProductController {
 
 		} catch (Exception e) {
 			e.getStackTrace();
-			return new ResponseEntity<Object>("Error Product update faild"  + e.getMessage(),
+			return new ResponseEntity<Object>("Error Product update faild" + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
-	
-	@RequestMapping(method = RequestMethod.DELETE, value = "deleteByProduct", produces = "application/json")
-	public ResponseEntity<Object> deleteByProduct(@RequestParam("id") Integer id){
-		
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteByProduct", produces = "application/json")
+	public ResponseEntity<Object> deleteByProduct(@RequestParam("id") Integer id) {
+
 		try {
 			productService.deleteByProductId(id);
-			return new ResponseEntity<Object>("User delete Successfully" , HttpStatus.OK);
-			
-		}catch(Exception e) {
+			return new ResponseEntity<Object>("User delete Successfully", HttpStatus.OK);
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Object>("faild user deleted" , HttpStatus.INTERNAL_SERVER_ERROR);
-			
+			return new ResponseEntity<Object>("faild user deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+
 		}
-		
+
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/findProductById", produces = "application/json")
+	public ResponseEntity<Object> findProductById(@RequestParam("id") Integer id) {
+
+		System.out.println("User is find in this id" + id);
+
+		try {
+			ProductResponseModel productResponseModel = productService.findProductById(id);
+			return new ResponseEntity<Object>( productResponseModel, HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(" Error fetching Product by id " + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+	}
 }
