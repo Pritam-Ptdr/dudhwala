@@ -127,4 +127,16 @@ public class ProductService {
 
 
 	}
+	
+	public String deleteByProductId(Integer id) throws Exception {
+	    Optional<MilkProduct> productOptional = productRepo.findById(id);
+
+	    if (!productOptional.isPresent()) {
+	        throw new Exception("product does not exist...");
+	    }
+
+	    productRepo.deleteById(id);  
+
+	    return "Product deleted successfully.";
+	}
 }

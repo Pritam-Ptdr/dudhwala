@@ -75,5 +75,20 @@ public class ProductController {
 		}
 
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "deleteByProduct", produces = "application/json")
+	public ResponseEntity<Object> deleteByProduct(@RequestParam("id") Integer id){
+		
+		try {
+			productService.deleteByProductId(id);
+			return new ResponseEntity<Object>("User delete Successfully" , HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>("faild user deleted" , HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		
+	}
 
 }
