@@ -1,5 +1,7 @@
 package com.amstech.dairy.management.system.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amstech.dairy.management.system.model.request.ProductModelRequest;
+import com.amstech.dairy.management.system.model.response.ProductResponseModel;
 import com.amstech.dairy.management.system.service.ProductService;
 
 @Controller
@@ -36,6 +39,21 @@ public class ProductController {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(" Product add faild" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
+		}
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET , value= "/findAllProduct" , produces = "application/json")
+	public ResponseEntity<Object> findAllProduct(){
+		
+		try {
+			List<ProductResponseModel>  productResponseModels = productService.findAllProduct();
+			return new ResponseEntity<>(  productResponseModels , HttpStatus.OK);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>( "Error fetching all Milk Product "+ e.getMessage() , HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 	}
 }

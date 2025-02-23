@@ -1,6 +1,8 @@
 package com.amstech.dairy.management.system.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.amstech.dairy.management.system.entity.MilkProduct;
 import com.amstech.dairy.management.system.entity.ProductCategory;
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.ProductModelRequest;
+import com.amstech.dairy.management.system.model.response.ProductResponseModel;
 import com.amstech.dairy.management.system.repo.ImageRepo;
 import com.amstech.dairy.management.system.repo.ProductCategoryRepo;
 import com.amstech.dairy.management.system.repo.ProductRepo;
@@ -61,4 +64,46 @@ public class ProductService {
 	        MilkProduct savedProduct = productRepo.save(milkProduct);
 	        
 }
+
+
+public List<ProductResponseModel> findAllProduct() throws Exception {
+    List<MilkProduct> productList = productRepo.findAll();
+    List<ProductResponseModel> productResponseModels = new ArrayList<>();
+
+    for (MilkProduct milkProduct : productList) {
+        ProductResponseModel responseModel = new ProductResponseModel();
+        
+        responseModel.setId(milkProduct.getId());
+        responseModel.setProductName(milkProduct.getProductName());
+        responseModel.setPrice(milkProduct.getPrice());
+        responseModel.setStock(milkProduct.getStock());
+        responseModel.setDescription(milkProduct.getDescription());
+        responseModel.setTotalPrice(milkProduct.getTotalPrice());
+        responseModel.setQuantity(milkProduct.getQuantity());
+        
+        
+        ProductCategory category = milkProduct.getProductCategory();
+        if (category != null) {
+           
+            responseModel.setCategoryId(category.getId());
+        } else {
+            throw new Exception("ProductCategory not found for product id: " + milkProduct.getId());
+        }
+        
+        
+        Image image = milkProduct.getImage();
+        if (image != null) {
+           
+            responseModel.setImageId(image.getId());
+        } else {
+            throw new Exception("Image not found for product id: " + milkProduct.getId());
+        }
+        
+        productResponseModels.add(responseModel);
+    }
+    
+    return productResponseModels;
+}
+
+
 }
