@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
+import com.amstech.dairy.management.system.model.response.UserModelResponse;
 import com.amstech.dairy.management.system.service.UserService;
 
 @Controller
@@ -95,7 +95,21 @@ public class UserController {
 		}
 		
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET , value = "/UserfindByMobile" , produces = "application/json")
+    public ResponseEntity<Object>UserfindByMobile(@RequestParam("mobileNumber") String mobileNumber ){
+		
+		try {
+			UserModelResponse userResponseModel = userService.UserfindByMobile(mobileNumber);
+			return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Error feaching User by MobileNumber" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+	}
 
 	
 }

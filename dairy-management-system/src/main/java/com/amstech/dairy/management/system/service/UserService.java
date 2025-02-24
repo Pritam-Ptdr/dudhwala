@@ -10,6 +10,7 @@ import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
 import com.amstech.dairy.management.system.model.response.ProductResponseModel;
+import com.amstech.dairy.management.system.model.response.UserModelResponse;
 import com.amstech.dairy.management.system.repo.UserRepo;
 
 @Service
@@ -124,5 +125,25 @@ public class UserService {
 	}
 
 	
+	
+	public UserModelResponse UserfindByMobile(String mobileNumber) throws Exception {
+	    Optional<User> userOptional = Optional.ofNullable(userRepo.findByMobileNumberUser(mobileNumber));
 
+	    if (!userOptional.isPresent()) {
+	        throw new Exception("User does not exist...");
+	    }
+
+	    User user = userOptional.get();
+
+	    UserModelResponse responseModel = new UserModelResponse();
+	    responseModel.setFirstName(user.getFirstName());
+	    responseModel.setLastName(user.getLastName());
+	    responseModel.setEmail(user.getEmail());
+	    responseModel.setMobileNumber(user.getMobileNumber());
+	    responseModel.setDateOfBirth(user.getDateOfBirth());
+	    responseModel.setGender(user.getGender());
+
+	    return responseModel;
+	}
+	
 }
