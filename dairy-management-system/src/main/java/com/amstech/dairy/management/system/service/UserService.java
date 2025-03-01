@@ -1,5 +1,6 @@
 package com.amstech.dairy.management.system.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,16 +135,20 @@ public class UserService {
 	    }
 
 	    User user = userOptional.get();
-
+	    
 	    UserModelResponse responseModel = new UserModelResponse();
+	    
 	    responseModel.setFirstName(user.getFirstName());
 	    responseModel.setLastName(user.getLastName());
 	    responseModel.setEmail(user.getEmail());
 	    responseModel.setMobileNumber(user.getMobileNumber());
-	    responseModel.setDateOfBirth(user.getDateOfBirth());
+
+	    // Ensure correct conversion
+	   responseModel.setDateOfBirth((java.sql.Date) user.getDateOfBirth());
+
 	    responseModel.setGender(user.getGender());
 
 	    return responseModel;
 	}
-	
+
 }

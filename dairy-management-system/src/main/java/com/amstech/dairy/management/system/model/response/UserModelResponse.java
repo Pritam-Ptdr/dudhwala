@@ -1,111 +1,76 @@
 package com.amstech.dairy.management.system.model.response;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class UserModelResponse {
+    
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String mobileNumber;
+    private Date dateOfBirth;  // Ensure correct type
+    private String gender;
 
+    // Default Constructor
+    public UserModelResponse() {}
 
-	private int id;
-	private String email;
-	private String firstName;
-	private String gender;
+    // Constructor with all fields
+    public UserModelResponse(String firstName, String lastName, String email, 
+                             String mobileNumber, Date dateOfBirth, String gender) { // Change String to Date
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
 
-	private String lastName;
-	private String mobileNumber;
-	private String password;
-	private double adharNumber;
-	private String aplodAdharImage;
-	private Date dateOfBirth;
+    // Getters and Setters
+    public String getFirstName() {
+        return firstName;
+    }
 
-	private Integer is_delete;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public Integer getIs_delete() {
-		return is_delete;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setIs_delete(Integer is_delete) {
-		this.is_delete = is_delete;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public double getAdharNumber() {
-		return adharNumber;
-	}
-
-	public void setAdharNumber(double adharNumber) {
-		this.adharNumber = adharNumber;
-	}
-
-	public String getAplodAdharImage() {
-		return aplodAdharImage;
-	}
-
-	public void setAplodAdharImage(String aplodAdharImage) {
-		this.aplodAdharImage = aplodAdharImage;
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-   
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

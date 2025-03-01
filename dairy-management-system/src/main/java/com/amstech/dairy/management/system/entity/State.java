@@ -15,18 +15,22 @@ public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
 	private int id;
 
-	@Column(name="country_id")
-	private int countryId;
+	@ManyToOne
+	@JoinColumn(name="country_id")  // Foreign Key
+	private Country country;
 
 	private String name;
 
-	//bi-directional many-to-one association to City
-	@OneToMany(mappedBy="state")
-	private List<City> cities;
+	// Default constructor (Required by JPA)
+	public State() {}
 
-	public State() {
+	// Constructor for new State creation
+	public State(String name, Country country) {
+		this.name = name;
+		this.country = country;
 	}
 
 	public int getId() {
@@ -37,12 +41,12 @@ public class State implements Serializable {
 		this.id = id;
 	}
 
-	public int getCountryId() {
-		return this.countryId;
+	public Country getCountry() {
+		return this.country;
 	}
 
-	public void setCountryId(int countryId) {
-		this.countryId = countryId;
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 
 	public String getName() {
@@ -52,27 +56,4 @@ public class State implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public List<City> getCities() {
-		return this.cities;
-	}
-
-	public void setCities(List<City> cities) {
-		this.cities = cities;
-	}
-
-	public City addCity(City city) {
-		getCities().add(city);
-		city.setState(this);
-
-		return city;
-	}
-
-	public City removeCity(City city) {
-		getCities().remove(city);
-		city.setState(null);
-
-		return city;
-	}
-
 }

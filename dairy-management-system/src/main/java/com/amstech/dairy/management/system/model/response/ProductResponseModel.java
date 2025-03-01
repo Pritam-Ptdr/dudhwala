@@ -65,7 +65,7 @@ public class ProductResponseModel {
 		public int getImageId() {
 			return imageId;
 		}
-		public void setImageId(int imageId) {
+		public void setImageId() {
 			this.imageId = imageId;
 		}
 		public void setCategoryId(int categoryId) {

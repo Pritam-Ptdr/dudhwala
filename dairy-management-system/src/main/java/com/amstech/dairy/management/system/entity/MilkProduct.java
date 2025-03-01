@@ -22,6 +22,8 @@ public class MilkProduct implements Serializable {
 	@Lob
 	private String description;
 
+	private int paketsize;
+
 	private BigDecimal price;
 
 	@Column(name="product_name")
@@ -66,6 +68,14 @@ public class MilkProduct implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getPaketsize() {
+		return this.paketsize;
+	}
+
+	public void setPaketsize(int paketsize) {
+		this.paketsize = paketsize;
 	}
 
 	public BigDecimal getPrice() {
@@ -145,7 +155,5 @@ public class MilkProduct implements Serializable {
 
 		return order;
 	}
-
-	
 
 }

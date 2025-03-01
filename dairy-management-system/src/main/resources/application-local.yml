@@ -5,7 +5,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/dudhwala
     username: root
-    password: 626130
+    password: 626130  # Use an environment variable instead of hardcoding the password
 
     hikari:
       minimum-idle: 5
@@ -30,4 +30,15 @@ spring:
 server:
   servlet:
     context-path: /dairy-management-system-api-local
-  port: 1061
+  port: 8081  # Change if this port is already in use
+
+logging:
+  file:
+    name: logs/dairy-management-system.log  
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    com.amstech.dairy.management.system: INFO

@@ -14,11 +14,23 @@ public class Country implements Serializable {
 	private static final long serialVersionUID = 1L;
     
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  // Ensure ID is auto-generated
 	private int id;
 
 	private String name;
 
-	public Country() {
+	// Default constructor (required by JPA)
+	public Country() {}
+
+	// Constructor for new country (without ID, since it's auto-generated)
+	public Country(String name) {
+		this.name = name;
+	}
+
+	// Constructor with ID
+	public Country(Integer id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
 	public int getId() {
@@ -36,5 +48,4 @@ public class Country implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

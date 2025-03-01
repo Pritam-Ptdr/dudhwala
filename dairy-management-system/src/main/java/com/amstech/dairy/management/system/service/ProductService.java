@@ -89,7 +89,8 @@ public class ProductService {
 			Image image = milkProduct.getImage();
 			if (image != null) {
 
-				responseModel.setImageId(image.getId());
+				//responseModel.setImageId(image.getId());
+			//	responseModel.setImageId(image.getId());
 			} else {
 				throw new Exception("Image not found for product id: " + milkProduct.getId());
 			}
@@ -141,39 +142,30 @@ public class ProductService {
 	}
 	
 	public ProductResponseModel findProductById(Integer id) throws Exception {
-	    Optional<MilkProduct> productOptional = productRepo.findById(id);
-	    if (!productOptional.isPresent()) {
-	        throw new Exception("User does not exist...");
-	    }
-	    
-	    MilkProduct milkProduct = productOptional.get();
-	    ProductResponseModel responseModel = new ProductResponseModel();
-	    
-	    responseModel.setId(milkProduct.getId());
-	    responseModel.setPrice(milkProduct.getPrice());
-	    responseModel.setProductName(milkProduct.getProductName());
-	    responseModel.setStock(milkProduct.getStock());
-	    responseModel.setDescription(milkProduct.getDescription());
-	    responseModel.setTotalPrice(milkProduct.getTotalPrice());
-	    responseModel.setQuantity(milkProduct.getQuantity());
-	    
-	    // Set categoryId
-	    ProductCategory category = milkProduct.getProductCategory();
-	    if (category != null) {
-	        responseModel.setCategoryId(category.getId());
-	    } else {
-	        throw new Exception("ProductCategory not found for product id: " + milkProduct.getId());
-	    }
-	    
-	    // Set imageId
-	    Image image = milkProduct.getImage();
-	    if (image != null) {
-	        responseModel.setImageId(image.getId());
-	    } else {
-	        throw new Exception("Image not found for product id: " + milkProduct.getId());
-	    }
-	    
-	    return responseModel;
-	}
 
+		Optional<MilkProduct> userOptional = productRepo.findById(id);
+
+		if (!userOptional.isPresent()) {
+			throw new Exception("User does note exist...");
+		}
+		MilkProduct milkProduct = userOptional.get();
+
+		ProductResponseModel responseModel = new ProductResponseModel();
+		Optional<Image> imageOpt = imageRepo.findById(responseModel.getImageId());
+
+		responseModel.setId(milkProduct.getId());
+		responseModel.setPrice(milkProduct.getPrice());
+		responseModel.setProductName(milkProduct.getProductName());
+		responseModel.setStock(milkProduct.getStock());
+		
+	
+		responseModel.setDescription(milkProduct.getDescription());
+		responseModel.setTotalPrice(milkProduct.getTotalPrice());
+		responseModel.setQuantity(milkProduct.getQuantity());
+		
+		
+		
+		return responseModel;
+	}
+	
 }

@@ -12,7 +12,7 @@ public class ProductModelRequest {
 	    private int quantity;
 	    private String stock;
 	    private BigDecimal totalPrice;
-	    private Integer imageId;
+	    private int imageId;
 	    private int categoryId;
 		
 	    public int getId() {

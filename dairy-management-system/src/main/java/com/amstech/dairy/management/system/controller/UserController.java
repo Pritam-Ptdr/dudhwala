@@ -1,5 +1,7 @@
 package com.amstech.dairy.management.system.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +22,8 @@ import com.amstech.dairy.management.system.service.UserService;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	public UserService userService;
@@ -33,7 +37,8 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST, value = "/signup", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Object> signup(@RequestBody UserModelRequest userModelRequest) {
 
-		System.out.print("saving user data with email : :" + userModelRequest);
+		
+		LOGGER.info("SAVING USER DATA WITH EMAIL {}" , userModelRequest.getEmail());
 
 		try {
 			userService.signup(userModelRequest);
@@ -51,7 +56,7 @@ public class UserController {
 	@RequestMapping(method= RequestMethod.PUT , value = "/UserUpdate" ,consumes = "application/json" , produces = "application/json")
 	public ResponseEntity<Object> UserUpdate(@RequestBody UserUpdateRequestModel userUpdateRequestModel){
 		
-		System.out.println("USer data update ");
+		LOGGER.info("USER DATA UPDATE {}" ,userUpdateRequestModel.getId());
 		
 		try {
 			userService.updateAll(userUpdateRequestModel);
@@ -67,7 +72,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.PUT , value = "/updatePassword" , consumes = "application/json" ,  produces = "application/json" )
 	public ResponseEntity<Object>updatePassword(@RequestBody UserModelRequest userModelRequest){
 		
-		System.out.println("User Passwor Update");
+		
 		
 		try {
 			userService.forgotPassword(userModelRequest);

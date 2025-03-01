@@ -1,52 +1,45 @@
 package com.amstech.dairy.management.system.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import jakarta.persistence.*;
-
 
 /**
  * The persistent class for the city database table.
- * 
  */
 @Entity
 @NamedQuery(name="City.findAll", query="SELECT c FROM City c")
 public class City implements Serializable {
-	private static final long serialVersionUID = 1L;
-     
-	@Id
-	private int id;
+    private static final long serialVersionUID = 1L;
 
-	private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Ensure ID is auto-generated
+    private int id;
 
-	//bi-directional many-to-one association to State
-	@ManyToOne
-	private State state;
+    @Column(nullable = false, unique = true) // Ensures city name is unique and cannot be null
+    private String name;
 
-	public City() {
-	}
+    @ManyToOne
+    @JoinColumn(name = "state_id", nullable = false)  // Foreign Key Mapping to State
+    private State state;
 
-	public int getId() {
-		return this.id;
-	}
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;  // One City can have multiple Addresses
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public City() {}
 
-	public String getName() {
-		return this.name;
-	}
+    public City(String name, State state) {
+        this.name = name;
+        this.state = state;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public City(int id, String name, State state) {
+        this.id = id;
+        this.name = name;
+        this.state = state;
+    }
 
-	public State getState() {
-		return this.state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
+    public int getId() {
+        return this.id;
+    }
 }

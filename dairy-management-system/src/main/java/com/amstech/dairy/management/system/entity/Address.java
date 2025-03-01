@@ -3,96 +3,95 @@ package com.amstech.dairy.management.system.entity;
 import java.io.Serializable;
 import jakarta.persistence.*;
 
-
 /**
  * The persistent class for the address database table.
- * 
  */
 @Entity
 @NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
 public class Address implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="city_id")
-	private int cityId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	
-	@Id
-	private int id;
+    @Column(name="lend_mark")
+    private String lendMark;
 
-	@Column(name="lend_mark")
-	private String lendMark;
+    @Lob
+    @Column(name="map_location")
+    private String mapLocation;
 
-	@Lob
-	@Column(name="map_location")
-	private String mapLocation;
+    @Column(name="near_by")
+    private String nearBy;
 
-	@Column(name="near_by")
-	private String nearBy;
+    @Column(name="postal_code")
+    private int postalCode;
 
-	@Column(name="postal_code")
-	private int postalCode;
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)  // Foreign Key to City
+    private City city;
 
-	@Column(name="user_role_id")
-	private int userRoleId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)  // Foreign Key to User
+    private User user;  // Renamed from userId to user
 
-	public Address() {
-	}
+    public Address() {
+    }
 
-	public int getCityId() {
-		return this.cityId;
-	}
+    public int getId() {
+        return this.id;
+    }
 
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public String getLendMark() {
+        return this.lendMark;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setLendMark(String lendMark) {
+        this.lendMark = lendMark;
+    }
 
-	public String getLendMark() {
-		return this.lendMark;
-	}
+    public String getMapLocation() {
+        return this.mapLocation;
+    }
 
-	public void setLendMark(String lendMark) {
-		this.lendMark = lendMark;
-	}
+    public void setMapLocation(String mapLocation) {
+        this.mapLocation = mapLocation;
+    }
 
-	public String getMapLocation() {
-		return this.mapLocation;
-	}
+    public String getNearBy() {
+        return this.nearBy;
+    }
 
-	public void setMapLocation(String mapLocation) {
-		this.mapLocation = mapLocation;
-	}
+    public void setNearBy(String nearBy) {
+        this.nearBy = nearBy;
+    }
 
-	public String getNearBy() {
-		return this.nearBy;
-	}
+    public int getPostalCode() {
+        return this.postalCode;
+    }
 
-	public void setNearBy(String nearBy) {
-		this.nearBy = nearBy;
-	}
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	public int getPostalCode() {
-		return this.postalCode;
-	}
+    public City getCity() {
+        return this.city;
+    }
 
-	public void setPostalCode(int postalCode) {
-		this.postalCode = postalCode;
-	}
+    public void setCity(City city) {
+        this.city = city;
+    }
 
-	public int getUserRoleId() {
-		return this.userRoleId;
-	}
+    public User getUser() {  // Fixed method name
+        return user;
+    }
 
-	public void setUserRoleId(int userRoleId) {
-		this.userRoleId = userRoleId;
-	}
-
+    public void setUser(User user) {  // Fixed method name
+        this.user = user;
+    }
 }

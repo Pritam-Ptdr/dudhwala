@@ -16,7 +16,7 @@ public class Payment implements Serializable {
 
 	@Column(name="customer_id")
 	private int customerId;
-    
+
 	@Id
 	private int id;
 

@@ -1,125 +1,68 @@
 package com.amstech.dairy.management.system.entity;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 
-/**
- * The persistent class for the order database table.
- * 
- */
+
+
 @Entity
-@NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
+@Table(name = "orders") // ✅ Table name in the database
+@NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o") // ✅ Correct entity name
 public class Order implements Serializable {
-	private static final long serialVersionUID = 1L;
+    
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@Column(name="customer_id")
-	private int customerId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // ✅ Define foreign key for user
+    private User user;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="order_date")
-	private Date orderDate;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false) // ✅ Define foreign key for product
+    private MilkProduct milkProduct;
 
-	private int quantity;
+    @Column(name = "order_date")
+    private Date orderDate;
 
-	private String schedule;
+    private int quantity;
+    private String schedule;
 
-	@Column(name="user_id")
-	private int userId;
+    
+    public Order() {
+    }
 
-	//bi-directional many-to-one association to MilkProduct
-	@ManyToOne
-	@JoinColumn(name="product_id")
-	private MilkProduct milkProduct;
+   
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	//bi-directional many-to-one association to OrderItem
-	@OneToMany(mappedBy="order")
-	private List<OrderItem> orderItems;
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-	public Order() {
-	}
+    public MilkProduct getMilkProduct() { return milkProduct; }
+    public void setMilkProduct(MilkProduct milkProduct) { this.milkProduct = milkProduct; }
 
-	public int getId() {
-		return this.id;
-	}
+    public Date getOrderDate() { return orderDate; }
+    public void setOrderDate(Date orderDate) { this.orderDate = orderDate; }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-	public int getCustomerId() {
-		return this.customerId;
-	}
+    public String getSchedule() { return schedule; }
+    public void setSchedule(String schedule) { this.schedule = schedule; }
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public Date getOrderDate() {
-		return this.orderDate;
-	}
-
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
-	}
-
-	public int getQuantity() {
-		return this.quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getSchedule() {
-		return this.schedule;
-	}
-
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
-	}
-
-	public int getUserId() {
-		return this.userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public MilkProduct getMilkProduct() {
-		return this.milkProduct;
-	}
-
-	public void setMilkProduct(MilkProduct milkProduct) {
-		this.milkProduct = milkProduct;
-	}
-
-	public List<OrderItem> getOrderItems() {
-		return this.orderItems;
-	}
-
-	public void setOrderItems(List<OrderItem> orderItems) {
-		this.orderItems = orderItems;
-	}
-
-	public OrderItem addOrderItem(OrderItem orderItem) {
-		getOrderItems().add(orderItem);
-		orderItem.setOrder(this);
-
-		return orderItem;
-	}
-
-	public OrderItem removeOrderItem(OrderItem orderItem) {
-		getOrderItems().remove(orderItem);
-		orderItem.setOrder(null);
-
-		return orderItem;
-	}
-
+   
 }

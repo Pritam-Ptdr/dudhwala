@@ -1,0 +1,94 @@
+package com.amstech.dairy.management.system.model.request;
+
+import java.sql.Date;
+import java.text.DecimalFormat;
+
+public class OrderModelRequest {
+    
+	
+	private int productId;
+	private String productName;
+	private int quantity;
+	private double price ;
+	private double totalPrice;
+	private int packetSize;
+	
+	private int userId;
+	private Date deliveryDate;
+	
+	private  String deliverySchedule ;
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public int getPacketSize() {
+		return packetSize;
+	}
+
+	public void setPacketSize(int packetSize) {
+		this.packetSize = packetSize;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getDeliverySchedule() {
+		return deliverySchedule;
+	}
+
+	public void setDeliverySchedule(String deliverySchedule) {
+		this.deliverySchedule = deliverySchedule;
+	}
+	
+	
+}
