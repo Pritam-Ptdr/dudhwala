@@ -22,7 +22,9 @@ public class MilkProduct implements Serializable {
 	@Lob
 	private String description;
 
-	private int paketsize;
+	
+	@Column(name = "paketsize", nullable = false)
+	private Integer paketsize;
 
 	private BigDecimal price;
 

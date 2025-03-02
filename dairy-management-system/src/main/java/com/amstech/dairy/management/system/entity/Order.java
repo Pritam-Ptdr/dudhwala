@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "orders") // ✅ Table name in the database
+@Table(name = "`order`") // ✅ Table name in the database
 @NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o") // ✅ Correct entity name
 public class Order implements Serializable {
     

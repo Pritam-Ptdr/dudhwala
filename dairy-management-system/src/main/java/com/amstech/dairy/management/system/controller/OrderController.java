@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,12 +34,12 @@ public class OrderController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST , value = "/addOrder" , consumes = "application/json" , produces = "application/json")
-	public ResponseEntity<Map<String ,Object>> addOrder(OrderModelRequest orderModelRequest )throws Exception{
+	public ResponseEntity<Map<String ,Object>> addOrder( @RequestBody OrderModelRequest orderModelRequest )throws Exception{
 		
 		Map<String ,Object> response = new HashMap<>();
 		
 		try {
-			//orderService.
+			orderService.addOrder(orderModelRequest);
 			response.put("status", "success");
 			response.put("message", "add to order  successfuly");
 			response.put("dat", orderModelRequest.getUserId() );

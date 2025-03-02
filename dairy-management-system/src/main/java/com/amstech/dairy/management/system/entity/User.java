@@ -32,6 +32,7 @@ public class User implements Serializable {
 	private String gender;
    
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(name="last_name")

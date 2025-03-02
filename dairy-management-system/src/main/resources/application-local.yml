@@ -30,7 +30,7 @@ spring:
 server:
   servlet:
     context-path: /dairy-management-system-api-local
-  port: 8081  # Change if this port is already in use
+  port: 8082  # Change if this port is already in use
 
 logging:
   file:

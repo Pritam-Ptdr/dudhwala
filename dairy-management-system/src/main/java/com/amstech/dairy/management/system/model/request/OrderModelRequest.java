@@ -6,23 +6,23 @@ import java.text.DecimalFormat;
 public class OrderModelRequest {
     
 	
-	private int productId;
+	private Integer productId;
 	private String productName;
 	private int quantity;
 	private double price ;
 	private double totalPrice;
 	private int packetSize;
 	
-	private int userId;
+	private Integer userId;
 	private Date deliveryDate;
 	
 	private  String deliverySchedule ;
 
-	public int getProductId() {
+	public Integer getProductId() {
 		return productId;
 	}
 
-	public void setProductId(int productId) {
+	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
 
@@ -66,11 +66,11 @@ public class OrderModelRequest {
 		this.packetSize = packetSize;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -90,6 +90,5 @@ public class OrderModelRequest {
 		this.deliverySchedule = deliverySchedule;
 	}
 	
-	
-	
+
 }
