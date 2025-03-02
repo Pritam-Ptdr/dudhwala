@@ -105,5 +105,17 @@ public class OrderService {
 	    LOGGER.info("Order saved successfully!");
 	}
 
+	
+	public String deleteByOrder(Integer id) throws Exception {
+	    Optional<Order> OrderOptional = orderRepo.findById(id);
+
+	    if (!OrderOptional.isPresent()) {
+	        throw new Exception("product does not exist...");
+	    }
+
+	    orderRepo.deleteById(id);  
+
+	    return "order deleted successfully.";
+	}
 
 }

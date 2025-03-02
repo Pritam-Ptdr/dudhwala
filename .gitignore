@@ -1,9 +1,16 @@
+# Ignore Eclipse project files
 .project
 .classpath
 .settings/
+
+# Ignore build and target directories
 build/
 target/
 
+# Ignore log files inside dairy-management-system/logs/
+dairy-management-system/logs/*.log
+
+# Ignore the same files inside any subdirectory
 */.project
 */.classpath
 */.settings/
