@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amstech.dairy.management.system.entity.MilkProduct;
 import com.amstech.dairy.management.system.model.request.OrderModelRequest;
+import com.amstech.dairy.management.system.model.response.OrderModelResponce;
 import com.amstech.dairy.management.system.repo.OrderRepo;
 import com.amstech.dairy.management.system.service.OrderService;
 
@@ -79,7 +80,7 @@ public class OrderController {
 		}catch(Exception e) {
 			e.printStackTrace();
 			
-			LOGGER.error("ORDER FAILD {}", e.getMessage() ,e);
+			LOGGER.error("ORDER  DELETE FAILD {}", e.getMessage() ,e);
 			
 			response.put("status", "Error");
 			response.put("message", "Order remove faild place try one more time");
@@ -88,11 +89,33 @@ public class OrderController {
 		}
 		
 		
-		
 	}
 	
-	
-	
+	@RequestMapping(method = RequestMethod.GET, value = "/orderFindById", produces = "application/json")
+	public ResponseEntity<Map<String, Object>> orderFindById(@RequestParam("id") Integer id) {
+	    LOGGER.info("ORDER FIND BY ID: {}", id);
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	        OrderModelResponce orderResponse = orderService.orderFindById(id);
+	        
+	        response.put("status", "success");
+	        response.put("message", "Order found successfully");
+	        response.put("data", orderResponse);
+
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        LOGGER.error("Error: ORDER FAILED {}", e.getMessage(), e);
+
+	        response.put("status", "Error");
+	        response.put("message", "Order not found");
+
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
+
 	
 	
 }

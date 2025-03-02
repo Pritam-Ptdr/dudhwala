@@ -1,5 +1,6 @@
 package com.amstech.dairy.management.system.model.request;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.DecimalFormat;
 
@@ -9,7 +10,10 @@ public class OrderModelRequest {
 	private Integer productId;
 	private String productName;
 	private int quantity;
-	private double price ;
+	private BigDecimal price;
+
+	
+
 	private double totalPrice;
 	private int packetSize;
 	
@@ -42,11 +46,13 @@ public class OrderModelRequest {
 		this.quantity = quantity;
 	}
 
-	public double getPrice() {
+	
+
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

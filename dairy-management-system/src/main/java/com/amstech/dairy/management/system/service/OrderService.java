@@ -1,5 +1,7 @@
 package com.amstech.dairy.management.system.service;
 
+
+
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import com.amstech.dairy.management.system.entity.MilkProduct;
 import com.amstech.dairy.management.system.entity.Order;
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.OrderModelRequest;
+import com.amstech.dairy.management.system.model.response.OrderModelResponce;
 import com.amstech.dairy.management.system.repo.OrderRepo;
 import com.amstech.dairy.management.system.repo.ProductRepo;
 import com.amstech.dairy.management.system.repo.UserRepo;
@@ -69,6 +72,7 @@ public class OrderService {
 	    LOGGER.info("Order saved successfully!");
 	}
 
+	//// ..........................order Delete .........................................
 	
 	public String deleteByOrder(Integer id) throws Exception {
 	    Optional<Order> OrderOptional = orderRepo.findById(id);
@@ -83,5 +87,49 @@ public class OrderService {
 
 	    return "order deleted successfully.";
 	}
+	
+	////................................order find gy id .......................................
+	
+	public OrderModelResponce orderFindById(Integer id) throws Exception {
+	    LOGGER.info("Finding ORDER by ID: {}", id);
+
+	    Optional<Order> orderOptional = orderRepo.findById(id);
+
+	    if (orderOptional.isEmpty()) {
+	        throw new Exception("Order does not exist...");
+	    }
+
+	    Order order = orderOptional.get();
+
+	    // Fetch user details
+	    Optional<User> userOptional = userRepo.findById(order.getUser().getId());
+	    if (userOptional.isEmpty()) {
+	        throw new Exception("User does not exist...");
+	    }
+	    User user = userOptional.get();
+
+	    // Fetch product details
+	    Optional<MilkProduct> productOptional = productRepo.findById(order.getMilkProduct().getId());
+	    if (productOptional.isEmpty()) {
+	        throw new Exception("Product does not exist...");
+	    }
+	    MilkProduct product = productOptional.get();
+
+	    
+	    OrderModelResponce orderResponse = new OrderModelResponce();
+	    orderResponse.setId(order.getId());
+	    orderResponse.setUserId(user.getId());
+	    orderResponse.setUserName(user.getFirstName());
+	    orderResponse.setProductId(product.getId());
+	    orderResponse.setProductName(product.getProductName());
+	    orderResponse.setPrice(product.getPrice());
+	    orderResponse.setPacketSize(product.getPaketsize());
+	    orderResponse.setQuantity(order.getQuantity());
+	    orderResponse.setDiliveryDate(order.getOrderDate());
+	    orderResponse.setDelivarySchedule(order.getSchedule());
+
+	    return orderResponse;
+	}
+
 
 }
