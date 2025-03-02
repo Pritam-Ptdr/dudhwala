@@ -33,54 +33,18 @@ public class OrderService {
 	
 	
 	
-//	@Transactional
-//	public void addOrder(OrderModelRequest orderModelRequest) {
-//	    LOGGER.info("Fetching user with ID: {}", orderModelRequest.getUserId());
-//	    
-//	    
-//	    LOGGER.info("Fetching user with ID: {}", orderModelRequest.getUserId());
-//
-//	    if (orderModelRequest.getUserId() <= 0) {
-//	        throw new IllegalArgumentException("Invalid User ID: " + orderModelRequest.getUserId());
-//	    }
-//
-//	    Optional<User> userOptional = userRepo.findById(orderModelRequest.getUserId());
-//	    if (userOptional.isEmpty()) {
-//	        LOGGER.error("No user found with ID: {}", orderModelRequest.getUserId());
-//	        throw new RuntimeException("User not found with ID: " + orderModelRequest.getUserId());
-//	    }
-//
-//	    User user = userOptional.get();
-//	    LOGGER.info("User found: {}", user);
-////	    User user = userRepo.findById(orderModelRequest.getUserId())
-////	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + orderModelRequest.getUserId()));
-////	    
-////	    LOGGER.info("Order User Id this {}",orderModelRequest.getUserId());
-//
-//	    MilkProduct milkProduct = productRepo.findById(orderModelRequest.getProductId())
-//	            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + orderModelRequest.getProductId()));
-//
-//	    Order order = new Order();
-//	    order.setUser(user);  
-//	    order.setMilkProduct(milkProduct); 
-//	    order.setOrderDate(orderModelRequest.getDeliveryDate());
-//	    order.setSchedule(orderModelRequest.getDeliverySchedule());
-//	    order.setQuantity(orderModelRequest.getQuantity());
-//
-//	    orderRepo.save(order);
-//	    LOGGER.info("Order saved successfully!");
-//	}
+
 	
 	@Transactional
 	public void addOrder(OrderModelRequest orderModelRequest) {
 	    LOGGER.info("Processing Order for User ID: {}", orderModelRequest.getUserId());
 
-	    // Validate User ID
+	    
 	    if (orderModelRequest.getUserId() == null || orderModelRequest.getUserId() <= 0) {
 	        throw new IllegalArgumentException("Invalid User ID: " + orderModelRequest.getUserId());
 	    }
 
-	    // Fetch User from Database
+	    
 	    Optional<User> userOptional = userRepo.findById(orderModelRequest.getUserId());
 	    if (userOptional.isEmpty()) {
 	        LOGGER.error("No user found with ID: {}", orderModelRequest.getUserId());
@@ -89,7 +53,7 @@ public class OrderService {
 	    User user = userOptional.get();
 	    LOGGER.info("User found: {}", user.getFirstName());
 
-	    // Fetch Product
+	    
 	    MilkProduct milkProduct = productRepo.findById(orderModelRequest.getProductId())
 	            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + orderModelRequest.getProductId()));
 
@@ -108,6 +72,8 @@ public class OrderService {
 	
 	public String deleteByOrder(Integer id) throws Exception {
 	    Optional<Order> OrderOptional = orderRepo.findById(id);
+	    
+	    LOGGER.info("ORDER DELETE bY ID {}" , id);
 
 	    if (!OrderOptional.isPresent()) {
 	        throw new Exception("product does not exist...");
