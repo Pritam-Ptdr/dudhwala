@@ -64,6 +64,28 @@ public class OrderController {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.PUT, value = "/orderUpdate", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Map<String, Object>> orderUpdate(@RequestBody OrderModelRequest orderModelRequest) {
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	        orderService.updateOrder(orderModelRequest);  // Correct method call
+	        response.put("status", "success");
+	        response.put("message", "Order updated successfully");
+	        response.put("data", orderModelRequest.getId());
+
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        LOGGER.error("ORDER update FAILED {}", e.getMessage(), e);
+
+	        response.put("status", "Error");
+	        response.put("message", "Order update failed");
+
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
+	}
+
 	@RequestMapping(method = RequestMethod.DELETE , value = "/deleteOrder" ,  produces = "application/json")
 	public ResponseEntity<Map<String ,Object>> deleteOrder(@RequestParam("id") Integer id )throws Exception{
 		

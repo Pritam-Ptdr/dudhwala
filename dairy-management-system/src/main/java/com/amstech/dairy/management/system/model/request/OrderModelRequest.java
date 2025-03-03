@@ -6,7 +6,16 @@ import java.text.DecimalFormat;
 
 public class OrderModelRequest {
     
+	private Integer id;
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	private Integer productId;
 	private String productName;
 	private int quantity;

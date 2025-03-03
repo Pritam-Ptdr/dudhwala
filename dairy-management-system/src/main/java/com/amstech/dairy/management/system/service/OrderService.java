@@ -71,7 +71,44 @@ public class OrderService {
 	    orderRepo.save(order);
 	    LOGGER.info("Order saved successfully!");
 	}
+  
+	//// ..............................order update .......................
+	// data note given this code update a null value place read a code properly and update a api 
 
+	@Transactional
+	public void updateOrder(OrderModelRequest orderModelRequest) {
+	    LOGGER.info("Processing Order update for Order ID: {}", orderModelRequest.getId());
+
+	    if (orderModelRequest.getId() == null) {
+	        throw new IllegalArgumentException("Order ID must not be null");
+	    }
+
+	    Order order = orderRepo.findById(orderModelRequest.getId())
+	            .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderModelRequest.getId()));
+
+	    
+	    User user = userRepo.findById(orderModelRequest.getUserId())
+	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + orderModelRequest.getUserId()));
+
+//	    // Fetch Product by Name
+//	    MilkProduct milkProduct = productRepo.findByProductNameUser(orderModelRequest.getProductName())
+//	            .orElseThrow(() -> new RuntimeException("Product not found with Name: " + orderModelRequest.getProductName()));
+
+	    // Update Order details
+	    order.setUser(user);
+	   
+	    
+	    //order.setMilkProduct(milkProduct);
+	    order.setOrderDate(orderModelRequest.getDeliveryDate());
+	    order.setSchedule(orderModelRequest.getDeliverySchedule());
+	    order.setQuantity(orderModelRequest.getQuantity());
+
+	    orderRepo.save(order);
+	    LOGGER.info("Order updated successfully!");
+	}
+
+
+	
 	//// ..........................order Delete .........................................
 	
 	public String deleteByOrder(Integer id) throws Exception {

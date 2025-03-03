@@ -55,6 +55,10 @@ public class MilkProduct implements Serializable {
 
 	public MilkProduct() {
 	}
+	
+	public MilkProduct(String productName) {
+		this.productName = productName ;
+	}
 
 	public int getId() {
 		return this.id;

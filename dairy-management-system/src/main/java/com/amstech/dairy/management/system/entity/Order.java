@@ -46,6 +46,7 @@ public class Order implements Serializable {
     }
 
    
+   
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -64,5 +65,7 @@ public class Order implements Serializable {
     public String getSchedule() { return schedule; }
     public void setSchedule(String schedule) { this.schedule = schedule; }
 
+
+	
    
 }
