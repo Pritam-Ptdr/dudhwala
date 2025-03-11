@@ -6,92 +6,177 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Where;
 
 /**
  * The persistent class for the subscription database table.
- * 
  */
 @Entity
-@NamedQuery(name="Subscription.findAll", query="SELECT s FROM Subscription s")
+
+@Table(name = "subscription") // Explicitly defining the table name
+@NamedQuery(name = "Subscription.findAll", query = "SELECT s FROM Subscription s")
 public class Subscription implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //
 	private int id;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="end_date")
-	private Date endDate;
-
-	@Column(name="plane_name")
-	private String planeName;
+	@Column(name = "plan_name") // Corrected from "plane_name"
+	private String planName;
 
 	private BigDecimal price;
 
-	@Column(name="product_id")
-	private int productId;
+//    @Column(name = "product_id", nullable = false)
+//    private int productId;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="start_date")
+	@Column(name = "start_date", nullable = false)
 	private Date startDate;
 
-	//bi-directional many-to-one association to SubscriptionHistory
-	@OneToMany(mappedBy="subscription")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "end_date")
+	private Date endDate;
+
+	@Column(name = "status", length = 100)
+	private String status;
+
+	@Column(name = "timeschedule", length = 100)
+	private String timeSchedule;
+
+	@Column(name = "quantity")
+	private Integer quantity; // Made Integer to allow null values
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user; // Assuming you have a User entity
+	
+	@ManyToOne
+	@JoinColumn(name = "address_id", nullable = true) // Ensure this column exists in DB
+	private Address address;
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	private MilkProduct milkProduct;
+
+ // Corrected Reference to MilkProduct
+
+	public MilkProduct getMilkProduct() {
+		return milkProduct;
+	}
+
+	public void setMilkProduct(MilkProduct milkProduct) {
+		this.milkProduct = milkProduct;
+	}
+
+	// Bi-directional one-to-many relationship with SubscriptionHistory
+	@OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SubscriptionHistory> subscriptionHistories;
+	
+	@Column(name = "total_price")
+	private BigDecimal totalPrice;
+
+	public BigDecimal getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	public Subscription() {
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public Date getEndDate() {
-		return this.endDate;
+	public String getPlanName() {
+		return planName;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getPlaneName() {
-		return this.planeName;
-	}
-
-	public void setPlaneName(String planeName) {
-		this.planeName = planeName;
+	public void setPlanName(String planName) {
+		this.planName = planName;
 	}
 
 	public BigDecimal getPrice() {
-		return this.price;
+		return price;
 	}
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	public int getProductId() {
-		return this.productId;
-	}
+//    public int getProductId() {
+//        return productId;
+//    }
 
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
+//    public void setProductId(int productId) {
+//        this.productId = productId;
+//    }
 
 	public Date getStartDate() {
-		return this.startDate;
+		return startDate;
 	}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getTimeSchedule() {
+		return timeSchedule;
+	}
+
+	public void setTimeSchedule(String timeSchedule) {
+		this.timeSchedule = timeSchedule;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public List<SubscriptionHistory> getSubscriptionHistories() {
-		return this.subscriptionHistories;
+		return subscriptionHistories;
 	}
 
 	public void setSubscriptionHistories(List<SubscriptionHistory> subscriptionHistories) {
@@ -101,15 +186,12 @@ public class Subscription implements Serializable {
 	public SubscriptionHistory addSubscriptionHistory(SubscriptionHistory subscriptionHistory) {
 		getSubscriptionHistories().add(subscriptionHistory);
 		subscriptionHistory.setSubscription(this);
-
 		return subscriptionHistory;
 	}
 
 	public SubscriptionHistory removeSubscriptionHistory(SubscriptionHistory subscriptionHistory) {
 		getSubscriptionHistories().remove(subscriptionHistory);
 		subscriptionHistory.setSubscription(null);
-
 		return subscriptionHistory;
 	}
-
 }

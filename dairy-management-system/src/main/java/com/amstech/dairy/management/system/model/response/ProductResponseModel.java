@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 
 import com.amstech.dairy.management.system.entity.Image;
 
+import lombok.Data;
+
+
+@Data
 public class ProductResponseModel {
 
 	 private int id;
@@ -16,62 +20,6 @@ public class ProductResponseModel {
 	    private Integer imageId;
 	    private int categoryId;
 		
-	    public int getId() {
-			return id;
-		}
-		public void setId(int id) {
-			this.id = id;
-		}
-		public String getDescription() {
-			return description;
-		}
-		public void setDescription(String description) {
-			this.description = description;
-		}
-		public BigDecimal getPrice() {
-			return price;
-		}
-		public void setPrice(BigDecimal price) {
-			this.price = price;
-		}
-		public String getProductName() {
-			return productName;
-		}
-		public void setProductName(String productName) {
-			this.productName = productName;
-		}
-		public int getQuantity() {
-			return quantity;
-		}
-		public void setQuantity(int quantity) {
-			this.quantity = quantity;
-		}
-		public String getStock() {
-			return stock;
-		}
-		public void setStock(String stock) {
-			this.stock = stock;
-		}
-		public BigDecimal getTotalPrice() {
-			return totalPrice;
-		}
-		public void setTotalPrice(BigDecimal totalPrice) {
-			this.totalPrice = totalPrice;
-		}
-		
-		public int getCategoryId() {
-			return categoryId;
-		}
-		public int getImageId() {
-			return imageId;
-		}
-		public void setImageId() {
-			this.imageId = imageId;
-		}
-		public void setCategoryId(int categoryId) {
-			this.categoryId = categoryId;
-		}
-		
-		
+	   
 		
 }

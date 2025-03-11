@@ -1,6 +1,7 @@
 package com.amstech.dairy.management.system.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amstech.dairy.management.system.model.request.ProductModelRequest;
 import com.amstech.dairy.management.system.model.response.ProductResponseModel;
+import com.amstech.dairy.management.system.responce.RestResponce;
 import com.amstech.dairy.management.system.service.ProductService;
 
 @Controller
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-	
+
 	private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
 	@Autowired
@@ -34,49 +36,52 @@ public class ProductController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/addMilkProduct", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> addMilkProduct(@RequestBody ProductModelRequest productModelRequest) {
+	public ResponseEntity<Map<String, Object>> addMilkProduct(@RequestBody ProductModelRequest productModelRequest) {
 
-		
 		LOGGER.info(" AddMilkProduct : object created ");
 
 		try {
 			productService.addMilkProduct(productModelRequest);
-			return new ResponseEntity<Object>(" Product add successfuly" + productModelRequest.getId(), HttpStatus.OK);
+			return ResponseEntity.ok(RestResponce.build().data(productModelRequest.getProductName()).success(200)
+					.message("User Created Successfully").getResponse());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(" Product add faild" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.error("Error during signup {}", e.getMessage(), e);
 
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(RestResponce.build().error(404).message("User signup failed").getResponse());
 		}
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/findAllProduct", produces = "application/json")
-	public ResponseEntity<Object> findAllProduct() {
+	public ResponseEntity<Map<String, Object>> findAllProduct() {
 
 		try {
 			List<ProductResponseModel> productResponseModels = productService.findAllProduct();
-			return new ResponseEntity<>(productResponseModels, HttpStatus.OK);
+			return ResponseEntity.ok(RestResponce.build()
 
+					.success(200).message("User Created Successfully").getResponse());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("Error fetching all Milk Product " + e.getMessage(),
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.error("Error during signup {}", e.getMessage(), e);
 
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(RestResponce.build().error(404).message("User signup failed").getResponse());
 		}
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateProduct", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> updateProduct(@RequestBody ProductModelRequest productModelRequest) {
+	public ResponseEntity<Map<String, Object>> updateProduct(@RequestBody ProductModelRequest productModelRequest) {
 
-		System.out.println("update User All details " + productModelRequest.getId());
+		LOGGER.info("update User All details  {} ", productModelRequest.getId());
 
 		try {
 			productService.updateProduct(productModelRequest);
-			return new ResponseEntity<Object>(" Product update successfuly" + productModelRequest, HttpStatus.OK);
-
+			return ResponseEntity.ok(RestResponce.build().data(productModelRequest.getProductName()).success(200)
+					.message("User Created Successfully").getResponse());
 		} catch (Exception e) {
-			e.getStackTrace();
-			return new ResponseEntity<Object>("Error Product update faild" + e.getMessage(),
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.error("Error during signup {}", e.getMessage(), e);
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(RestResponce.build().error(404).message("User signup failed").getResponse());
 		}
 
 	}
@@ -86,30 +91,30 @@ public class ProductController {
 
 		try {
 			productService.deleteByProductId(id);
-			return new ResponseEntity<Object>("User delete Successfully", HttpStatus.OK);
-
+			return ResponseEntity
+					.ok(RestResponce.build().data(id).success(200).message("User Created Successfully").getResponse());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>("faild user deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.error("Error during signup {}", e.getMessage(), e);
 
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(RestResponce.build().error(404).message("User signup failed").getResponse());
 		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/findProductById", produces = "application/json")
-	public ResponseEntity<Object> findProductById(@RequestParam("id") Integer id) {
+	public ResponseEntity<Map<String, Object>> findProductById(@RequestParam("id") Integer id) {
 
-		System.out.println("User is find in this id" + id);
+		LOGGER.info("User is find in this id {}", id);
 
 		try {
 			ProductResponseModel productResponseModel = productService.findProductById(id);
-			return new ResponseEntity<Object>( productResponseModel, HttpStatus.OK);
-
+			return ResponseEntity
+					.ok(RestResponce.build().data(productResponseModel).success(200).message("User find Successfully").getResponse());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(" Error fetching Product by id " + e.getMessage(),
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			LOGGER.error("Error during product find  {}", e.getMessage(), e);
 
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(RestResponce.build().error(404).message("User find by product failed").getResponse());
 		}
 	}
 }

@@ -1,18 +1,25 @@
 package com.amstech.dairy.management.system.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-
 import com.amstech.dairy.management.system.entity.User;
+import com.amstech.dairy.management.system.model.request.UserForgotPasswordModelRequest;
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
+import com.amstech.dairy.management.system.model.request.UserSignupModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
 import com.amstech.dairy.management.system.model.response.ProductResponseModel;
 import com.amstech.dairy.management.system.model.response.UserModelResponse;
 import com.amstech.dairy.management.system.repo.UserRepo;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -20,7 +27,7 @@ public class UserService {
 	@Autowired
 	private UserRepo userRepo;
 
-	public void signup(UserModelRequest userModelRequest) throws Exception {
+	public void signup(UserSignupModelRequest userModelRequest) throws Exception {
 
 		com.amstech.dairy.management.system.entity.User userEmail = userRepo
 				.findByEmailUser(userModelRequest.getEmail());
@@ -86,29 +93,26 @@ public class UserService {
 
 	}
 
-	public void forgotPassword(UserModelRequest userModelRequest) throws Exception {
+	  @Transactional
+	    public void forgotPassword(String userName, String newPassword) throws Exception {
+	        // Trim to remove any leading or trailing spaces
+	        userName = userName.trim();
 
-		String mobileNumber = userModelRequest.getMobileNumber().trim();
+	        // Fix: Ensure it searches by email or mobile number correctly
+	        Optional<User> userOptional = userRepo.findByEmailOrMobileNumber(userName, userName);
 
-		Optional<User> userOptional = Optional.of(userRepo.findByMobileNumberUser(mobileNumber));
+	        if (!userOptional.isPresent()) {
+	            throw new Exception("User not found with email or mobile number: " + userName);
+	        }
 
-		if (!userOptional.isPresent()) {
-			throw new Exception("User not found with mobile number " + mobileNumber);
-		}
+	        // Update the password
+	        int updateCount = userRepo.forgotPassword(userName, newPassword);
 
-		User user = userOptional.get();
-
-		int userUpdate = userRepo.forgotPassword(user.getEmail(), user.getMobileNumber(),
-				userModelRequest.getPassword());
-
-		if (userUpdate > 0) {
-			System.out.println("User Password update Successfuly");
-		} else {
-			System.out.println("User Password update failed");
-		}
-	}
-
-	public void softDeleteById(Integer id) throws Exception {
+	        if (updateCount == 0) {
+	            throw new Exception("Failed to update password");
+	        }
+	    }
+	public void softDeleteById(Integer id , boolean isActive) throws Exception {
 
 		Optional<User> userOptional = userRepo.findById(id);
 
@@ -117,38 +121,59 @@ public class UserService {
 		}
 		User user = userOptional.get();
 
-		if (user.getIs_deleted() == 1) {
-			throw new Exception("User already deleted");
-		}
-
-		user.setIs_deleted(1);
-		userRepo.save(user);
+//		if (user.getIs_deleted() == 1) {
+//			throw new Exception("User already deleted");
+//		}
+//
+//		user.setIs_deleted(1);
+//		userRepo.save(user);
+		user.setIs_deleted(isActive ? 0 : 1);
+        userRepo.save(user);
 	}
 
-	
-	
 	public UserModelResponse UserfindByMobile(String mobileNumber) throws Exception {
-	    Optional<User> userOptional = Optional.ofNullable(userRepo.findByMobileNumberUser(mobileNumber));
+		Optional<User> userOptional = Optional.ofNullable(userRepo.findByMobileNumberUser(mobileNumber));
 
-	    if (!userOptional.isPresent()) {
-	        throw new Exception("User does not exist...");
-	    }
+		if (!userOptional.isPresent()) {
+			throw new Exception("User does not exist...");
+		}
 
-	    User user = userOptional.get();
-	    
-	    UserModelResponse responseModel = new UserModelResponse();
-	    
-	    responseModel.setFirstName(user.getFirstName());
-	    responseModel.setLastName(user.getLastName());
-	    responseModel.setEmail(user.getEmail());
-	    responseModel.setMobileNumber(user.getMobileNumber());
+		User user = userOptional.get();
 
-	    // Ensure correct conversion
-	   responseModel.setDateOfBirth((java.sql.Date) user.getDateOfBirth());
+		UserModelResponse responseModel = new UserModelResponse();
 
-	    responseModel.setGender(user.getGender());
+		responseModel.setFirstName(user.getFirstName());
+		responseModel.setLastName(user.getLastName());
+		responseModel.setEmail(user.getEmail());
+		responseModel.setMobileNumber(user.getMobileNumber());
 
-	    return responseModel;
+		// Ensure correct conversion
+		responseModel.setDateOfBirth((java.sql.Date) user.getDateOfBirth());
+
+		responseModel.setGender(user.getGender());
+
+		return responseModel;
+	}
+
+	public List<UserModelResponse> findAllUser(Integer page, Integer size) throws Exception {
+		
+		org.springframework.data.domain.Page<User> userPage = userRepo.findAll(PageRequest.of(page, size)); // Get
+																											// Page<User>
+		List<User> userList = userPage.getContent(); // Extract List<User>
+
+		List<UserModelResponse> userResponseModel = new ArrayList<>();
+
+		for (User user : userList) {
+			UserModelResponse responseModel = new UserModelResponse();
+			responseModel.setFirstName(user.getFirstName());
+			responseModel.setLastName(user.getLastName());
+			responseModel.setEmail(user.getEmail());
+			responseModel.setMobileNumber(user.getMobileNumber());
+			responseModel.setDateOfBirth((java.sql.Date) user.getDateOfBirth());
+
+			userResponseModel.add(responseModel);
+		}
+		return userResponseModel;
 	}
 
 }

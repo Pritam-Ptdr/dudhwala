@@ -142,30 +142,35 @@ public class ProductService {
 	}
 	
 	public ProductResponseModel findProductById(Integer id) throws Exception {
+	    
+	    if (id == null) {
+	        throw new IllegalArgumentException("Product ID must not be null");
+	    }
 
-		Optional<MilkProduct> userOptional = productRepo.findById(id);
+	    
+	    System.out.println("Fetching product with ID: " + id);
 
-		if (!userOptional.isPresent()) {
-			throw new Exception("User does note exist...");
-		}
-		MilkProduct milkProduct = userOptional.get();
+	    // Fetch the MilkProduct from the database
+	    Optional<MilkProduct> productOptional = productRepo.findById(id);
 
-		ProductResponseModel responseModel = new ProductResponseModel();
-		Optional<Image> imageOpt = imageRepo.findById(responseModel.getImageId());
+	    if (!productOptional.isPresent()) {
+	        throw new Exception("Product with ID " + id + " does not exist in the database.");
+	    }
 
-		responseModel.setId(milkProduct.getId());
-		responseModel.setPrice(milkProduct.getPrice());
-		responseModel.setProductName(milkProduct.getProductName());
-		responseModel.setStock(milkProduct.getStock());
-		
-	
-		responseModel.setDescription(milkProduct.getDescription());
-		responseModel.setTotalPrice(milkProduct.getTotalPrice());
-		responseModel.setQuantity(milkProduct.getQuantity());
-		
-		
-		
-		return responseModel;
+	    MilkProduct milkProduct = productOptional.get();
+	    System.out.println("Product found: " + milkProduct.getProductName());
+
+	    // Create the response model and set product details
+	    ProductResponseModel responseModel = new ProductResponseModel();
+	    responseModel.setId(milkProduct.getId());
+	    responseModel.setPrice(milkProduct.getPrice());
+	    responseModel.setProductName(milkProduct.getProductName());
+	    responseModel.setStock(milkProduct.getStock());
+	    responseModel.setDescription(milkProduct.getDescription());
+	    responseModel.setTotalPrice(milkProduct.getTotalPrice());
+	    responseModel.setQuantity(milkProduct.getQuantity());
+
+	    return responseModel;
 	}
-	
+
 }

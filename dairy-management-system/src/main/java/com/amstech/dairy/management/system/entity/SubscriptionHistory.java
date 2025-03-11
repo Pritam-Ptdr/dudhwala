@@ -4,79 +4,78 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.Date;
 
-
 /**
  * The persistent class for the subscription_history database table.
- * 
  */
 @Entity
-@Table(name="subscription_history")
-@NamedQuery(name="SubscriptionHistory.findAll", query="SELECT s FROM SubscriptionHistory s")
+@Table(name = "subscription_history")
+@NamedQuery(name = "SubscriptionHistory.findAll", query = "SELECT s FROM SubscriptionHistory s")
 public class SubscriptionHistory implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
+    private int id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="end_date")
-	private Date endDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="start_date")
-	private Date startDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_date", nullable = true)
+    private Date endDate;
 
-	//bi-directional many-to-one association to Subscription
-	@ManyToOne
-	@JoinColumn(name="subcription_id")
-	private Subscription subscription;
+     @ManyToOne
+    @JoinColumn(name = "subscription_id", nullable = false) 
+    private Subscription subscription;
 
-	//bi-directional many-to-one association to UserRole
-	@ManyToOne
-	@JoinColumn(name="customer_id")
-	private UserRole userRole;
+     @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private UserRole userRole;
 
-	public SubscriptionHistory() {
-	}
+    public SubscriptionHistory() {
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    // Getters and Setters
+    public int getId() {
+        return this.id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Date getEndDate() {
-		return this.endDate;
-	}
+    public Date getStartDate() {
+        return this.startDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public Date getStartDate() {
-		return this.startDate;
-	}
+    public Date getEndDate() {
+        return this.endDate;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public Subscription getSubscription() {
-		return this.subscription;
-	}
+    public Subscription getSubscription() {
+        return this.subscription;
+    }
 
-	public void setSubscription(Subscription subscription) {
-		this.subscription = subscription;
-	}
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 
-	public UserRole getUserRole() {
-		return this.userRole;
-	}
+    public UserRole getUserRole() {
+        return this.userRole;
+    }
 
-	public void setUserRole(UserRole userRole) {
-		this.userRole = userRole;
-	}
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
 
+   
 }

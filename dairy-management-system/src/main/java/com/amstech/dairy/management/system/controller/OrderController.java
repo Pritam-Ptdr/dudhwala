@@ -1,6 +1,7 @@
 package com.amstech.dairy.management.system.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amstech.dairy.management.system.entity.MilkProduct;
 import com.amstech.dairy.management.system.model.request.OrderModelRequest;
 import com.amstech.dairy.management.system.model.response.OrderModelResponce;
+import com.amstech.dairy.management.system.model.response.UserModelResponse;
 import com.amstech.dairy.management.system.repo.OrderRepo;
 import com.amstech.dairy.management.system.service.OrderService;
 
@@ -138,6 +140,27 @@ public class OrderController {
 	    }
 	}
 
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/findAllOrder", produces = "application/json")
+	public ResponseEntity<Object> findAllOrder(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+
+		
+		LOGGER.info(" Order is find all data by id ");
+
+		try {
+
+			List<OrderModelResponce> orderResponseModel = orderService.findAllOrder(page, size);
+			return new ResponseEntity<>(orderResponseModel, HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(" error fetching  Order all data " + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+
+	}
+	
 	
 	
 }

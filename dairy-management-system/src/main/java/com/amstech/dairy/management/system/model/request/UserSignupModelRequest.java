@@ -5,17 +5,17 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class UserUpdateRequestModel {
+public class UserSignupModelRequest {
 
 	private int id;
-	private String firstName;
-	private String lastName;
-    private String gender;
 	private String email;
+	private String firstName;
+	private String gender;
+
+	private String lastName;
 	private String mobileNumber;
+	private String password;
+
 	private Date dateOfBirth;
-	private boolean isEmailVarified;
-	private boolean isEmailUpdate;
-	
-	
+
 }

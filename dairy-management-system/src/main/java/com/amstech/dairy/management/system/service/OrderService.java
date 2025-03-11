@@ -1,12 +1,13 @@
 package com.amstech.dairy.management.system.service;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.amstech.dairy.management.system.entity.MilkProduct;
@@ -14,6 +15,7 @@ import com.amstech.dairy.management.system.entity.Order;
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.OrderModelRequest;
 import com.amstech.dairy.management.system.model.response.OrderModelResponce;
+import com.amstech.dairy.management.system.model.response.UserModelResponse;
 import com.amstech.dairy.management.system.repo.OrderRepo;
 import com.amstech.dairy.management.system.repo.ProductRepo;
 import com.amstech.dairy.management.system.repo.UserRepo;
@@ -25,147 +27,166 @@ public class OrderService {
 
 	@Autowired
 	public UserRepo userRepo;
-	
+
 	@Autowired
 	public ProductRepo productRepo;
-	
-	@Autowired
-	public OrderRepo orderRepo ;
-	
-	private final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
-	
-	
-	
 
-	
+	@Autowired
+	public OrderRepo orderRepo;
+
+	private final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
+
 	@Transactional
 	public void addOrder(OrderModelRequest orderModelRequest) {
-	    LOGGER.info("Processing Order for User ID: {}", orderModelRequest.getUserId());
+		LOGGER.info("Processing Order for User ID: {}", orderModelRequest.getUserId());
 
-	    
-	    if (orderModelRequest.getUserId() == null || orderModelRequest.getUserId() <= 0) {
-	        throw new IllegalArgumentException("Invalid User ID: " + orderModelRequest.getUserId());
-	    }
+		if (orderModelRequest.getUserId() == null || orderModelRequest.getUserId() <= 0) {
+			throw new IllegalArgumentException("Invalid User ID: " + orderModelRequest.getUserId());
+		}
 
-	    
-	    Optional<User> userOptional = userRepo.findById(orderModelRequest.getUserId());
-	    if (userOptional.isEmpty()) {
-	        LOGGER.error("No user found with ID: {}", orderModelRequest.getUserId());
-	        throw new RuntimeException("User not found with ID: " + orderModelRequest.getUserId());
-	    }
-	    User user = userOptional.get();
-	    LOGGER.info("User found: {}", user.getFirstName());
+		Optional<User> userOptional = userRepo.findById(orderModelRequest.getUserId());
+		if (userOptional.isEmpty()) {
+			LOGGER.error("No user found with ID: {}", orderModelRequest.getUserId());
+			throw new RuntimeException("User not found with ID: " + orderModelRequest.getUserId());
+		}
+		User user = userOptional.get();
+		LOGGER.info("User found: {}", user.getFirstName());
 
-	    
-	    MilkProduct milkProduct = productRepo.findById(orderModelRequest.getProductId())
-	            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + orderModelRequest.getProductId()));
+		MilkProduct milkProduct = productRepo.findById(orderModelRequest.getProductId()).orElseThrow(
+				() -> new RuntimeException("Product not found with ID: " + orderModelRequest.getProductId()));
 
-	    // Save Order
-	    Order order = new Order();
-	    order.setUser(user);
-	    order.setMilkProduct(milkProduct);
-	    order.setOrderDate(orderModelRequest.getDeliveryDate());
-	    order.setSchedule(orderModelRequest.getDeliverySchedule());
-	    order.setQuantity(orderModelRequest.getQuantity());
+		// Save Order
+		Order order = new Order();
+		order.setUser(user);
+		order.setMilkProduct(milkProduct);
+		order.setOrderDate(orderModelRequest.getDeliveryDate());
+		order.setSchedule(orderModelRequest.getSchedule());
+		order.setQuantity(orderModelRequest.getQuantity());
 
-	    orderRepo.save(order);
-	    LOGGER.info("Order saved successfully!");
+		orderRepo.save(order);
+		LOGGER.info("Order saved successfully!");
 	}
-  
+
 	//// ..............................order update .......................
-	// data note given this code update a null value place read a code properly and update a api 
+	// data note given this code update a null value place read a code properly and
+	//// update
 
 	@Transactional
 	public void updateOrder(OrderModelRequest orderModelRequest) {
-	    LOGGER.info("Processing Order update for Order ID: {}", orderModelRequest.getId());
+		LOGGER.info("Processing Order update for Order ID: {}", orderModelRequest.getId());
 
-	    if (orderModelRequest.getId() == null) {
-	        throw new IllegalArgumentException("Order ID must not be null");
-	    }
+		if (orderModelRequest.getId() == null) {
+			throw new IllegalArgumentException("Order ID must not be null");
+		}
 
-	    Order order = orderRepo.findById(orderModelRequest.getId())
-	            .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderModelRequest.getId()));
+		Order order = orderRepo.findById(orderModelRequest.getId())
+				.orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderModelRequest.getId()));
 
-	    
-	    User user = userRepo.findById(orderModelRequest.getUserId())
-	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + orderModelRequest.getUserId()));
+		User user = userRepo.findById(orderModelRequest.getUserId())
+				.orElseThrow(() -> new RuntimeException("User not found with ID: " + orderModelRequest.getUserId()));
 
 //	    // Fetch Product by Name
 //	    MilkProduct milkProduct = productRepo.findByProductNameUser(orderModelRequest.getProductName())
 //	            .orElseThrow(() -> new RuntimeException("Product not found with Name: " + orderModelRequest.getProductName()));
 
-	    // Update Order details
-	    order.setUser(user);
-	   
-	    
-	    //order.setMilkProduct(milkProduct);
-	    order.setOrderDate(orderModelRequest.getDeliveryDate());
-	    order.setSchedule(orderModelRequest.getDeliverySchedule());
-	    order.setQuantity(orderModelRequest.getQuantity());
+		// Update Order details
+		order.setUser(user);
 
-	    orderRepo.save(order);
-	    LOGGER.info("Order updated successfully!");
+		// order.setMilkProduct(milkProduct);
+		order.setOrderDate(orderModelRequest.getDeliveryDate());
+		order.setSchedule(orderModelRequest.getSchedule());
+		order.setQuantity(orderModelRequest.getQuantity());
+
+		orderRepo.save(order);
+		LOGGER.info("Order updated successfully!");
 	}
 
+	//// ..........................order Delete
+	//// .........................................
 
-	
-	//// ..........................order Delete .........................................
-	
 	public String deleteByOrder(Integer id) throws Exception {
-	    Optional<Order> OrderOptional = orderRepo.findById(id);
-	    
-	    LOGGER.info("ORDER DELETE bY ID {}" , id);
+		Optional<Order> OrderOptional = orderRepo.findById(id);
 
-	    if (!OrderOptional.isPresent()) {
-	        throw new Exception("product does not exist...");
-	    }
+		LOGGER.info("ORDER DELETE bY ID {}", id);
 
-	    orderRepo.deleteById(id);  
+		if (!OrderOptional.isPresent()) {
+			throw new Exception("product does not exist...");
+		}
 
-	    return "order deleted successfully.";
+		orderRepo.deleteById(id);
+
+		return "order deleted successfully.";
+	}
+
+	//// ................................order find gy id
+	//// .......................................
+
+	public OrderModelResponce orderFindById(Integer id) throws Exception {
+		LOGGER.info("Finding ORDER by ID: {}", id);
+
+		Optional<Order> orderOptional = orderRepo.findById(id);
+
+		if (orderOptional.isEmpty()) {
+			throw new Exception("Order does not exist...");
+		}
+
+		Order order = orderOptional.get();
+
+		// Fetch user details
+		Optional<User> userOptional = userRepo.findById(order.getUser().getId());
+		if (userOptional.isEmpty()) {
+			throw new Exception("User does not exist...");
+		}
+		User user = userOptional.get();
+
+		// Fetch product details
+		Optional<MilkProduct> productOptional = productRepo.findById(order.getMilkProduct().getId());
+		if (productOptional.isEmpty()) {
+			throw new Exception("Product does not exist...");
+		}
+		MilkProduct product = productOptional.get();
+
+		OrderModelResponce orderResponse = new OrderModelResponce();
+		orderResponse.setId(order.getId());
+		orderResponse.setUserId(user.getId());
+		orderResponse.setUserName(user.getFirstName());
+		orderResponse.setProductId(product.getId());
+		orderResponse.setProductName(product.getProductName());
+		orderResponse.setPrice(product.getPrice());
+		orderResponse.setPacketSize(product.getPaketsize());
+		orderResponse.setQuantity(order.getQuantity());
+		orderResponse.setDiliveryDate(order.getOrderDate());
+		orderResponse.setDelivarySchedule(order.getSchedule());
+
+		return orderResponse;
 	}
 	
-	////................................order find gy id .......................................
 	
-	public OrderModelResponce orderFindById(Integer id) throws Exception {
-	    LOGGER.info("Finding ORDER by ID: {}", id);
+	public List<OrderModelResponce> findAllOrder(Integer page, Integer size) throws Exception {
+	    org.springframework.data.domain.Page<Order> orderPage = orderRepo.findAll(PageRequest.of(page, size)); // Fetch Page<Order>
+	    List<Order> orderList = orderPage.getContent(); // Extract List<Order>
 
-	    Optional<Order> orderOptional = orderRepo.findById(id);
+	    List<OrderModelResponce> orderResponseModel = new ArrayList<>();
 
-	    if (orderOptional.isEmpty()) {
-	        throw new Exception("Order does not exist...");
+	    for (Order order : orderList) {
+	        OrderModelResponce responseModel = new OrderModelResponce();
+	        
+	        responseModel.setId(order.getId());
+	        responseModel.setUserId(order.getUser().getId()); 
+	        responseModel.setUserName(order.getUser().getFirstName());
+
+	        responseModel.setProductId(order.getMilkProduct().getId());
+	        responseModel.setProductName(order.getMilkProduct().getProductName());
+	        responseModel.setPrice(order.getMilkProduct().getPrice());
+	        responseModel.setPacketSize(order.getMilkProduct().getPaketsize());
+
+	        responseModel.setQuantity(order.getQuantity());
+	        responseModel.setDiliveryDate(order.getOrderDate());
+	        responseModel.setDelivarySchedule(order.getSchedule());
+
+	        orderResponseModel.add(responseModel);
 	    }
-
-	    Order order = orderOptional.get();
-
-	    // Fetch user details
-	    Optional<User> userOptional = userRepo.findById(order.getUser().getId());
-	    if (userOptional.isEmpty()) {
-	        throw new Exception("User does not exist...");
-	    }
-	    User user = userOptional.get();
-
-	    // Fetch product details
-	    Optional<MilkProduct> productOptional = productRepo.findById(order.getMilkProduct().getId());
-	    if (productOptional.isEmpty()) {
-	        throw new Exception("Product does not exist...");
-	    }
-	    MilkProduct product = productOptional.get();
-
-	    
-	    OrderModelResponce orderResponse = new OrderModelResponce();
-	    orderResponse.setId(order.getId());
-	    orderResponse.setUserId(user.getId());
-	    orderResponse.setUserName(user.getFirstName());
-	    orderResponse.setProductId(product.getId());
-	    orderResponse.setProductName(product.getProductName());
-	    orderResponse.setPrice(product.getPrice());
-	    orderResponse.setPacketSize(product.getPaketsize());
-	    orderResponse.setQuantity(order.getQuantity());
-	    orderResponse.setDiliveryDate(order.getOrderDate());
-	    orderResponse.setDelivarySchedule(order.getSchedule());
-
-	    return orderResponse;
+	    return orderResponseModel;
 	}
 
 

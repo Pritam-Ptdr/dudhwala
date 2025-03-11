@@ -2,13 +2,14 @@ package com.amstech.dairy.management.system.model.request;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.DecimalFormat;
 
 import lombok.Data;
 
-@Data
-public class OrderModelRequest {
 
+@Data
+public class SubcriptionModelRequest {
+
+	
 	private Integer id;
 
 	private Integer productId;
@@ -20,7 +21,12 @@ public class OrderModelRequest {
 	private int packetSize;
 
 	private Integer userId;
-	private Date deliveryDate;
-	private String  schedule;
+	private String UserName;
+	private Date deliveryStartDate;
+	
+	private Date deliveryEndtDate;
+	private String  planName;
+	
+	private String status;
 
 }

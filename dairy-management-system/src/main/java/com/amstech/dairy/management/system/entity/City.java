@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.*;
 
-/**
- * The persistent class for the city database table.
- */
 @Entity
 @NamedQuery(name="City.findAll", query="SELECT c FROM City c")
 public class City implements Serializable {
@@ -39,7 +36,41 @@ public class City implements Serializable {
         this.state = state;
     }
 
-    public int getId() {
-        return this.id;
-    }
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+   
 }

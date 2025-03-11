@@ -41,35 +41,7 @@ public class AddressService {
     private AddressRepo   addresRepo;
     
    
-//    @Transactional  
-//    public void addAdress(AddresModelRequest addresModelRequest) throws Exception {
-//        
-//        Country country = countryRepo.findByName(addresModelRequest.getCountryName())
-//                .orElseGet(() -> countryRepo.save(new Country(addresModelRequest.getCountryName())));
-//
-//        State state = stateRepo.findByNameAndCountry(addresModelRequest.getStateName(), country)
-//                .orElseGet(() -> stateRepo.save(new State(addresModelRequest.getStateName(), country)));
-//
-//        System.out.println("State ID for city query: " + state.getId());
-//
-//        City city = cityRepo.findByNameAndState(addresModelRequest.getCityName(), state)
-//                .orElseGet(() -> cityRepo.save(new City(addresModelRequest.getCityName(), state)));
-//
-//        System.out.println("City ID after fetch: " + city.getId());
-//
-//        User user = userRepo.findById(addresModelRequest.getUserId())
-//                .orElseThrow(() -> new RuntimeException("User not found")); 
-//
-//        Address address = new Address();
-//        address.setUser(user);
-//        address.setCity(city);
-//        address.setLendMark(addresModelRequest.getLendMark()); 
-//        address.setPostalCode(addresModelRequest.getPostalCode()); 
-//        address.setMapLocation(addresModelRequest.getMapLocation()); 
-//        address.setNearBy(addresModelRequest.getNearBy()); 
-//
-//        addresRepo.save(address);
-//    }
+
     @Transactional  
     public void addAddress(AddresModelRequest addressModelRequest) throws Exception {
         
