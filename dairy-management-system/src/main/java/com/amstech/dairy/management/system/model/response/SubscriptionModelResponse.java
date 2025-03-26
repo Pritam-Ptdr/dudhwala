@@ -43,5 +43,7 @@ public class SubscriptionModelResponse {
 	private String nearBy;
 	private  int  postalCode ;
 	
+	private String address ;
+	
 
 }

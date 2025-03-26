@@ -9,6 +9,9 @@ target/
 
 # Ignore log files inside dairy-management-system/logs/
 dairy-management-system/logs/*.log
+# Ignore log files
+dairy-management-system/logs/*.gz
+
 #dairy-management-system/logs/*.log*
 
 # Ignore the same files inside any subdirectory

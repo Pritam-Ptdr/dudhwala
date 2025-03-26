@@ -18,6 +18,15 @@ public class OrderModelResponce {
     private Date diliveryDate;
     private String userName;
     private int userId;
+    
+    private String cityName;
+	private String stateName;
+	private String countryName;
+	
+	private String fullName;
+	
+	private String nearBy;
+	private  int  postalCode ;
 
     
    

@@ -32,35 +32,37 @@ public class ProductService {
 	@Autowired
 	public ImageRepo imageRepo;
 
-	public void addMilkProduct(ProductModelRequest productModelRequest) {
-		if (productModelRequest.getProductName() == null || productModelRequest.getProductName().isEmpty()) {
-			throw new IllegalArgumentException("Product name is required");
-		}
+	public ProductModelRequest addMilkProduct(ProductModelRequest productModelRequest) {
+	    if (productModelRequest.getProductName() == null || productModelRequest.getProductName().isEmpty()) {
+	        throw new IllegalArgumentException("Product name is required");
+	    }
 
-		if (productModelRequest.getPrice() == null || productModelRequest.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-			throw new IllegalArgumentException("Price must be greater than zero");
-		}
+	    if (productModelRequest.getPrice() == null || productModelRequest.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+	        throw new IllegalArgumentException("Price must be greater than zero");
+	    }
 
-		Optional<ProductCategory> categoryOpt = productCategoryRepo.findById(productModelRequest.getCategoryId());
-		if (categoryOpt.isEmpty()) {
-			throw new IllegalArgumentException("Invalid product category ID");
-		}
+	    Optional<ProductCategory> categoryOpt = productCategoryRepo.findById(productModelRequest.getCategoryId());
+	    if (categoryOpt.isEmpty()) {
+	        throw new IllegalArgumentException("Invalid product category ID");
+	    }
 
-		Optional<Image> imageOpt = imageRepo.findById(productModelRequest.getImageId());
+	    Optional<Image> imageOpt = imageRepo.findById(productModelRequest.getImageId());
 
-		// Creating the MilkProduct entity
-		MilkProduct milkProduct = new MilkProduct();
-		milkProduct.setProductName(productModelRequest.getProductName());
-		milkProduct.setStock(productModelRequest.getStock());
-		milkProduct.setPrice(productModelRequest.getPrice());
-		milkProduct.setTotalPrice(productModelRequest.getTotalPrice());
-		milkProduct.setDescription(productModelRequest.getDescription());
-		milkProduct.setQuantity(productModelRequest.getQuantity());
-		milkProduct.setProductCategory(categoryOpt.get());
-		milkProduct.setImage(imageOpt.get());
+	    // Creating and saving the MilkProduct entity
+	    MilkProduct milkProduct = new MilkProduct();
+	    milkProduct.setProductName(productModelRequest.getProductName());
+	    milkProduct.setStock(productModelRequest.getStock());
+	    milkProduct.setPrice(productModelRequest.getPrice());
+	    milkProduct.setTotalPrice(productModelRequest.getTotalPrice());
+	    milkProduct.setDescription(productModelRequest.getDescription());
+	    milkProduct.setQuantity(productModelRequest.getQuantity());
+	    milkProduct.setProductCategory(categoryOpt.get());
+	    milkProduct.setImage(imageOpt.orElse(null)); // Handle possible null
 
-		MilkProduct savedProduct = productRepo.save(milkProduct);
+	    MilkProduct savedProduct = productRepo.save(milkProduct);
 
+	    // Convert `MilkProduct` back to `ProductModelRequest`
+	    return new ProductModelRequest(savedProduct);
 	}
 
 	public List<ProductResponseModel> findAllProduct() throws Exception {

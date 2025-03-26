@@ -42,3 +42,6 @@ logging:
     org.springframework.web: INFO
     org.hibernate: INFO
     com.amstech.dairy.management.system: INFO
+
+app: 
+  max-file-size: 500000 	

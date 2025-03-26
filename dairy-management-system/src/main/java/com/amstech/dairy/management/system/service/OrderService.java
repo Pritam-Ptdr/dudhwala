@@ -10,12 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.amstech.dairy.management.system.entity.Address;
+import com.amstech.dairy.management.system.entity.City;
+import com.amstech.dairy.management.system.entity.Country;
 import com.amstech.dairy.management.system.entity.MilkProduct;
 import com.amstech.dairy.management.system.entity.Order;
+import com.amstech.dairy.management.system.entity.State;
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.OrderModelRequest;
 import com.amstech.dairy.management.system.model.response.OrderModelResponce;
 import com.amstech.dairy.management.system.model.response.UserModelResponse;
+import com.amstech.dairy.management.system.repo.AddressRepo;
 import com.amstech.dairy.management.system.repo.OrderRepo;
 import com.amstech.dairy.management.system.repo.ProductRepo;
 import com.amstech.dairy.management.system.repo.UserRepo;
@@ -25,6 +30,9 @@ import jakarta.transaction.Transactional;
 @Service
 public class OrderService {
 
+	@Autowired
+	public AddressRepo addressRepo ;
+	
 	@Autowired
 	public UserRepo userRepo;
 
@@ -183,6 +191,55 @@ public class OrderService {
 	        responseModel.setQuantity(order.getQuantity());
 	        responseModel.setDiliveryDate(order.getOrderDate());
 	        responseModel.setDelivarySchedule(order.getSchedule());
+	        
+	        String firstName = order.getUser().getFirstName();
+            String lastName = order.getUser().getLastName();
+            String fullName = firstName + " " + lastName;
+            responseModel.setFullName(fullName);
+	        
+	        Address address = order.getAddress();
+            if (address == null) {
+                List<Address> userAddresses = addressRepo.findByUserId(order.getUser().getId()); // Fetch all user addresses
+                if (!userAddresses.isEmpty()) {
+                    address = userAddresses.get(0); // Take first address (or implement a better selection logic)
+                }
+            }
+               
+            responseModel.setPostalCode(address.getPostalCode());
+            responseModel.setNearBy(address.getNearBy());
+            
+               
+            if (address != null) {
+                City city = address.getCity();
+                if (city != null) {
+                	 responseModel.setCityName(city.getName());
+                //	String cityName =  city.getName();
+                    
+
+                    State state = city.getState();
+                    if (state != null) {
+                    	 responseModel.setStateName(state.getName());
+                    	//String   StateName = state.getName();
+
+                        Country country = state.getCountry();
+                        if (country != null) {
+                        	 responseModel.setCountryName(country.getName());
+                          //   String countryName  = country.getName();
+                            
+                        } else {
+                        	 responseModel.setCountryName("N/A");
+                        }
+                    } else {
+                    	 responseModel.setStateName("N/A");
+                    }
+                } else {
+                	 responseModel.setCityName("N/A");
+                }
+            } else {
+            	 responseModel.setCityName("N/A");
+            	 responseModel.setStateName("N/A");
+            	 responseModel.setCountryName("N/A");
+            }
 
 	        orderResponseModel.add(responseModel);
 	    }

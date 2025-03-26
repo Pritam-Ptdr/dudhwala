@@ -31,7 +31,22 @@ public class MilkProduct implements Serializable {
 	@Column(name="product_name")
 	private String productName;
 
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public void setPaketsize(Integer paketsize) {
+		this.paketsize = paketsize;
+	}
+
 	private int quantity;
+	
+	@Column(name ="image_url")
+	private String filePath ;
 
 	@Lob
 	private String stock;

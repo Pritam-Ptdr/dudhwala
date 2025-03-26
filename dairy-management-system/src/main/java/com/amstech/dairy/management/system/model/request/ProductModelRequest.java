@@ -2,6 +2,8 @@ package com.amstech.dairy.management.system.model.request;
 
 import java.math.BigDecimal;
 
+import com.amstech.dairy.management.system.entity.MilkProduct;
+
 import lombok.Data;
 
 
@@ -18,7 +20,24 @@ public class ProductModelRequest {
 	    private BigDecimal totalPrice;
 	    private int imageId;
 	    private int categoryId;
-		
+	    private String filePath;
+	    
+	    
+	    public ProductModelRequest(MilkProduct milkProduct) {
+	        this.id = milkProduct.getId();
+	        this.description = milkProduct.getDescription();
+	        this.price = milkProduct.getPrice();
+	        this.productName = milkProduct.getProductName();
+	        this.quantity = milkProduct.getQuantity();
+	        this.stock = milkProduct.getStock();
+	        this.totalPrice = milkProduct.getTotalPrice();
+	        this.imageId = milkProduct.getImage() != null ? milkProduct.getImage().getId() : 0; // Handle null
+	        this.categoryId = milkProduct.getProductCategory() != null ? milkProduct.getProductCategory().getId() : 0; // Handle null
+	        this.filePath = milkProduct.getFilePath();
+	    }
+	    
+	    
+	    
 //	    public int getId() {
 //			return id;
 //		}

@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+
 import com.amstech.dairy.management.system.entity.User;
 import com.amstech.dairy.management.system.model.request.UserForgotPasswordModelRequest;
+import com.amstech.dairy.management.system.model.request.UserLoginModelRequest;
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
 import com.amstech.dairy.management.system.model.request.UserSignupModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
@@ -176,4 +178,36 @@ public class UserService {
 		return userResponseModel;
 	}
 
+	public String login(UserLoginModelRequest userRequestModel) throws Exception {
+	    System.out.println("I am user service");
+
+	    // Fetch user based 
+	    User user = userRepo.findByLogin(
+	    		userRequestModel.getUserName(),
+	 	        userRequestModel.getPassword()
+	    );
+
+	    if (user == null) {
+	        throw new Exception("Invalid credentials. Login failed.");
+	    }
+
+	    // Fetch the roleId
+	    Optional<Integer> roleIdOptional = userRepo.findRoleByUserId(user.getId());
+
+	    // Check if roleId exists
+	    if (!roleIdOptional.isPresent()) {
+	        throw new Exception("No Role Assigned");
+	    }
+
+	    int roleId = roleIdOptional.get();
+
+	    // Role-based redirection
+	    if (roleId == 1) {
+	        return "MANAGER_DASHBOARD"; // Redirect to Manager Dashboard
+	    } else if (roleId == 2) {
+	        return "EMPLOYEE_DASHBOARD"; // Employee Dashboard
+	    }
+
+	    return "UNKNOWN_ROLE";
+	}
 }

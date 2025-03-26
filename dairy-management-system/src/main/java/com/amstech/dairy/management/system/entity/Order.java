@@ -40,9 +40,25 @@ public class Order implements Serializable {
 
     private int quantity;
     private String schedule;
+    
+	@ManyToOne
+	@JoinColumn(name = "address_id", nullable = true) // Ensure this column exists in DB
+	private Address address;
 
     
-    public Order() {
+    public Address getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
+
+	public Order() {
     }
 
    

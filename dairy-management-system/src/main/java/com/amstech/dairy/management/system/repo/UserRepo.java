@@ -38,6 +38,15 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 	    @Query("UPDATE User e SET e.password = :password WHERE e.mobileNumber = :userName OR e.email = :userName")
 	    int forgotPassword(@Param("userName") String userName, 
 	                       @Param("password") String password);
+	 
+	 @Query("SELECT e FROM User e WHERE (e.mobileNumber = :userName OR e.email = :userName) AND e.password = :password")
+	 User findByLogin(@Param("userName") String userName, @Param("password") String password);
+
+	
+	 
+	 @Query("SELECT ur.role.id FROM UserRole ur WHERE ur.user.id = :userId")
+	 Optional<Integer> findRoleByUserId(@Param("userId") Integer userId);
+
 
 //	 @Modifying
 //	 @Transactional

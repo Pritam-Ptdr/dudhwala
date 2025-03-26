@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.amstech.dairy.management.system.model.request.UserForgotPasswordModelRequest;
+import com.amstech.dairy.management.system.model.request.UserLoginModelRequest;
 import com.amstech.dairy.management.system.model.request.UserModelRequest;
 import com.amstech.dairy.management.system.model.request.UserSignupModelRequest;
 import com.amstech.dairy.management.system.model.request.UserUpdateRequestModel;
@@ -128,40 +130,62 @@ public class UserController {
 		}
 	}
 
-//	
-//	@RequestMapping(method = RequestMethod.GET, value = "/findAllUser", produces = "application/json")
-//	public ResponseEntity<Object> findAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-//
-//		
-//		LOGGER.info("User is find all data by id ");
-//
-//		try {
-//
-//			List<UserModelResponse> userResponseModel = userService.findAllUser(page, size);
-//			return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return new ResponseEntity<>(" error fetching User all data " + e.getMessage(),
-//					HttpStatus.INTERNAL_SERVER_ERROR);
-//
-//		}
-//
-//	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/findAllUser", produces = "application/json")
-	public ResponseEntity<Object> findAllUser(@RequestParam(value = "page", defaultValue = "-1") Integer page,
-			@RequestParam(value = "size", defaultValue = "-1") Integer size) {
+	public ResponseEntity<Object> findAllUser(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
 
-		LOGGER.info("User is finding all data");
+		
+		LOGGER.info("User is find all data by id ");
 
 		try {
+
 			List<UserModelResponse> userResponseModel = userService.findAllUser(page, size);
 			return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("Error fetching user data: " + e.getMessage(),
+			return new ResponseEntity<>(" error fetching User all data " + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+
+	}
+//	@RequestMapping(method = RequestMethod.GET, value = "/findAllUser", produces = "application/json")
+//	public ResponseEntity<Object> findAllUser(@RequestParam(value = "page", defaultValue = "-1") Integer page,
+//			@RequestParam(value = "size", defaultValue = "-1") Integer size) {
+//
+//		LOGGER.info("User is finding all data");
+//
+//		try {
+//			List<UserModelResponse> userResponseModel = userService.findAllUser(page, size);
+//			return new ResponseEntity<>(userResponseModel, HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return new ResponseEntity<>("Error fetching user data: " + e.getMessage(),
+//					HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/login", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Object> login(@RequestBody UserLoginModelRequest userRequestModel) {
+
+		System.out.print("User login in website :" + userRequestModel);
+
+		try {
+			String result = userService.login(userRequestModel);
+
+			if (result.equals("MANAGER_DASHBOARD")) {
+				return ResponseEntity.ok("Redirect to Manager Dashboard");
+			} else if (result.equals("EMPLOYEE_DASHBOARD")) {
+				return ResponseEntity.ok("Redirect to Employee Dashboard");
+			} else {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied");
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>("User Login not successful: " + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 
 }

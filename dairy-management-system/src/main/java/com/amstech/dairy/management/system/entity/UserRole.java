@@ -4,10 +4,8 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the user_role database table.
- * 
  */
 @Entity
 @Table(name="user_role")
@@ -16,10 +14,13 @@ public class UserRole implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name="user_id")
-	private int userId;
+	// Establish the Many-to-One relationship with User
+	@ManyToOne
+	@JoinColumn(name="user_id", referencedColumnName="id") // Ensure column names match your DB
+	private User user;
 
 	//bi-directional many-to-one association to Milkmen
 	@OneToMany(mappedBy="userRole")
@@ -35,6 +36,7 @@ public class UserRole implements Serializable {
 
 	//bi-directional many-to-one association to Role
 	@ManyToOne
+	@JoinColumn(name="role_id", referencedColumnName="id") // Ensure column names match your DB
 	private Role role;
 
 	public UserRole() {
@@ -48,12 +50,12 @@ public class UserRole implements Serializable {
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return this.userId;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public List<Milkmen> getMilkmens() {
@@ -129,5 +131,4 @@ public class UserRole implements Serializable {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
 }

@@ -202,14 +202,19 @@ public class SubscriptionService {
                 City city = address.getCity();
                 if (city != null) {
                     response.setCityName(city.getName());
+                //	String cityName =  city.getName();
+                    
 
                     State state = city.getState();
                     if (state != null) {
-                        response.setStateName(state.getName());
+                       response.setStateName(state.getName());
+                    	//String   StateName = state.getName();
 
                         Country country = state.getCountry();
                         if (country != null) {
-                            response.setCountryName(country.getName());
+                           response.setCountryName(country.getName());
+                          //   String countryName  = country.getName();
+                            
                         } else {
                             response.setCountryName("N/A");
                         }
@@ -224,6 +229,8 @@ public class SubscriptionService {
                 response.setStateName("N/A");
                 response.setCountryName("N/A");
             }
+            
+            
        
             // Calculate total price
             BigDecimal price = subscription.getMilkProduct().getPrice();
@@ -259,5 +266,7 @@ public class SubscriptionService {
             default: return 0; 
         }
     }
+    
+    
 
 }
